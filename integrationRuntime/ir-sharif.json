@@ -1,0 +1,9 @@
+{
+	"name": "ir-sharif",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"selfContainedInteractiveAuthoringEnabled": true
+		}
+	}
+}
