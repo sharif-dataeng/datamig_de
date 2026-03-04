@@ -1,0 +1,33 @@
+name: Require Reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, review_requested, review_request_removed]
+
+jobs:
+  check-reviewer:
+    name: Reviewer Required
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if reviewer is assigned
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            const reviewers = pr.data.requested_reviewers || [];
+            const teams = pr.data.requested_teams || [];
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            const total = reviewers.length + teams.length + reviews.data.length;
+            if (total === 0) {
+              core.setFailed('No reviewer assigned. Add at least one reviewer before merging.');
+            } else {
+              core.info(total + ' reviewer(s) found.');
+            }
