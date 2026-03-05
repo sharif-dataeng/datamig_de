@@ -1,0 +1,36 @@
+{
+	"name": "ds_sqlsrvr_dyn_ss",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqlsrvr_dyn_ss",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"srvrName": "Hp\\AKHIL_SQL_SERVER",
+				"dbName": "AdventureWorkMock",
+				"usrName": "akhil",
+				"scrName": "akhil"
+			}
+		},
+		"parameters": {
+			"tblName": {
+				"type": "string"
+			},
+			"schName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().tblName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tblName",
+				"type": "Expression"
+			}
+		}
+	}
+}
