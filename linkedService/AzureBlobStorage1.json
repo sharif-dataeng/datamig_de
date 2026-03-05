@@ -1,0 +1,11 @@
+{
+	"name": "AzureBlobStorage1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"containerUri": "https://dbstg4.blob.core.windows.net/resourceblogstorage",
+			"authenticationType": "Anonymous"
+		}
+	}
+}
