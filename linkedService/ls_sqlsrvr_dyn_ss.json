@@ -37,7 +37,7 @@
 			}
 		},
 		"connectVia": {
-			"referenceName": "ir-akhil2",
+			"referenceName": "ir-sharif",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
