@@ -5,14 +5,36 @@
 			"referenceName": "ls_adlsgen2_dyn_ss",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"strgName": "dbstoragejgyrff2qoccg6"
+				"strgName": {
+					"value": "@dataset().strgName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"usrName": {
+				"type": "string"
+			},
+			"flName": {
+				"type": "string"
+			},
+			"strgName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().flName",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().usrName",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
