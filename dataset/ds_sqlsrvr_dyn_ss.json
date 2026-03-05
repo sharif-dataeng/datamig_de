@@ -3,13 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqlsrvr_dyn_ss",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"srvrName": "Hp\\AKHIL_SQL_SERVER",
-				"dbName": "AdventureWorkMock",
-				"usrName": "akhil",
-				"scrName": "akhil"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"tblName": {
