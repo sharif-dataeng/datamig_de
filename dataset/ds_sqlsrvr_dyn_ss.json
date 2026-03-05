@@ -48,7 +48,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": {
-				"value": "@dataset().tblName",
+				"value": "@dataset().schName",
 				"type": "Expression"
 			},
 			"table": {
