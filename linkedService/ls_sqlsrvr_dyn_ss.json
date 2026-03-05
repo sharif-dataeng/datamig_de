@@ -3,20 +3,16 @@
 	"properties": {
 		"parameters": {
 			"srvrName": {
-				"type": "string",
-				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
+				"type": "string"
 			},
 			"dbName": {
-				"type": "string",
-				"defaultValue": "AdventureWorkMock"
+				"type": "string"
 			},
 			"usrName": {
-				"type": "string",
-				"defaultValue": "akhil"
+				"type": "string"
 			},
 			"scrName": {
-				"type": "string",
-				"defaultValue": "akhil"
+				"type": "string"
 			}
 		},
 		"annotations": [],
