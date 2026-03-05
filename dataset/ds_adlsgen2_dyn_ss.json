@@ -12,12 +12,6 @@
 			}
 		},
 		"parameters": {
-			"usrName": {
-				"type": "string"
-			},
-			"flName": {
-				"type": "string"
-			},
 			"strgName": {
 				"type": "string"
 			}
@@ -26,15 +20,7 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().flName",
-					"type": "Expression"
-				},
-				"fileSystem": {
-					"value": "@dataset().usrName",
-					"type": "Expression"
-				}
+				"type": "AzureBlobFSLocation"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
