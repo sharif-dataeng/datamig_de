@@ -1,0 +1,48 @@
+{
+	"name": "ls_sqlsrvr_dyn_ss",
+	"properties": {
+		"parameters": {
+			"srvrName": {
+				"type": "string",
+				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
+			},
+			"dbName": {
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
+			},
+			"usrName": {
+				"type": "string",
+				"defaultValue": "akhil"
+			},
+			"scrName": {
+				"type": "string",
+				"defaultValue": "akhil"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "@{linkedService().srvrName}",
+			"database": "@{linkedService().dbName}",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "@{linkedService().usrName}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_de_keyvault3",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().scrName",
+					"type": "Expression"
+				}
+			}
+		},
+		"connectVia": {
+			"referenceName": "ir-akhil2",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
