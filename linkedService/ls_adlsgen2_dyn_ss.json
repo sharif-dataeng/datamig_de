@@ -1,0 +1,16 @@
+{
+	"name": "ls_adlsgen2_dyn_ss",
+	"properties": {
+		"parameters": {
+			"strgName": {
+				"type": "string",
+				"defaultValue": "dbstoragejgyrff2qoccg6"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+		}
+	}
+}
