@@ -1,0 +1,47 @@
+{
+	"name": "ds_raw_dump",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_bs_g1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "rawdump"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "description",
+				"type": "String"
+			},
+			{
+				"name": "industry",
+				"type": "String"
+			},
+			{
+				"name": "level",
+				"type": "String"
+			},
+			{
+				"name": "size",
+				"type": "String"
+			},
+			{
+				"name": "line_code",
+				"type": "String"
+			},
+			{
+				"name": "value",
+				"type": "String"
+			}
+		]
+	}
+}
