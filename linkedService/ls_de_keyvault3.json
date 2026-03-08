@@ -1,0 +1,10 @@
+{
+	"name": "ls_de_keyvault3",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://de-keyvault3.vault.azure.net/"
+		}
+	}
+}
