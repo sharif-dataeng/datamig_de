@@ -3,13 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqlsrvr_dyn_de",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"srvrName": "DELL",
-				"dbName": "AdventureWorkMock",
-				"usrName": "benarji",
-				"scrName": "benarji"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"tblName": {
