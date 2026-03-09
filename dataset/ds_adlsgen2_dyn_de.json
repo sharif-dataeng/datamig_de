@@ -27,7 +27,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": "sourcenew"
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().pathName",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
