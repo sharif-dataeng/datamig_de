@@ -1,0 +1,41 @@
+{
+	"name": "ls_sqlsrvr_dyn_de",
+	"properties": {
+		"parameters": {
+			"srvrName": {
+				"type": "string",
+				"defaultValue": "DELL"
+			},
+			"dbName": {
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
+			},
+			"usrName": {
+				"type": "string",
+				"defaultValue": "benarji"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "@{linkedService().srvrName}",
+			"database": "@{linkedService().dbName}",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "@{linkedService().usrName}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_de_keyvault3",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "benarji"
+			}
+		},
+		"connectVia": {
+			"referenceName": "ir-benarji",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
