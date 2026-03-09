@@ -3,24 +3,7 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_adlsgen2_dyn_de",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"strgName": {
-					"value": "@dataset().strgName",
-					"type": "Expression"
-				}
-			}
-		},
-		"parameters": {
-			"strgName": {
-				"type": "string"
-			},
-			"pathName": {
-				"type": "string"
-			},
-			"fileName": {
-				"type": "string"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
