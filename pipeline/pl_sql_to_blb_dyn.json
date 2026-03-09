@@ -88,7 +88,7 @@
 								"type": "Expression"
 							},
 							"fileName": {
-								"value": "@concat(pipeline().parameters.tblName, formatDateTime(pipeline().RunId, 'yyyyMMddHHmmss'), '.csv')",
+								"value": "@concat(pipeline().parameters.tblName, formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
 								"type": "Expression"
 							}
 						}
@@ -98,25 +98,32 @@
 		],
 		"parameters": {
 			"schName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "HumanResources"
 			},
 			"tblName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Employee"
 			},
 			"srvrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DELL"
 			},
 			"dbName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
 			},
 			"usrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "benarji"
 			},
 			"scrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "benarji"
 			},
 			"strgName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "dbstorage5"
 			}
 		},
 		"annotations": []
