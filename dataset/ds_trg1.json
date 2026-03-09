@@ -21,10 +21,6 @@
 				"fileName": {
 					"value": "@dataset().trg_filename",
 					"type": "Expression"
-				},
-				"fileSystem": {
-					"value": "@dataset().trg_file",
-					"type": "Expression"
 				}
 			},
 			"columnDelimiter": ",",

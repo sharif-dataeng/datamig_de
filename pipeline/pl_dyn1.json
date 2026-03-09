@@ -72,10 +72,6 @@
 						"referenceName": "ds_trg1",
 						"type": "DatasetReference",
 						"parameters": {
-							"trg_file": {
-								"value": "@pipeline().parameters.tarfil",
-								"type": "Expression"
-							},
 							"trg_filename": {
 								"value": "@pipeline().parameters.trfil_name",
 								"type": "Expression"
@@ -93,12 +89,6 @@
 				"type": "String"
 			},
 			"fil": {
-				"type": "String"
-			},
-			"tfil": {
-				"type": "String"
-			},
-			"tarfil": {
 				"type": "String"
 			},
 			"trfil_name": {
