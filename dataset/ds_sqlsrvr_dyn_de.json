@@ -3,13 +3,43 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqlsrvr_dyn_de",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"srvrName": {
+					"value": "@dataset().srvrName",
+					"type": "Expression"
+				},
+				"dbName": {
+					"value": "@dataset().dbName",
+					"type": "Expression"
+				},
+				"usrName": {
+					"value": "@dataset().usrName",
+					"type": "Expression"
+				},
+				"scrName": {
+					"value": "@dataset().scrName",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"tblName": {
 				"type": "string"
 			},
 			"schName": {
+				"type": "string"
+			},
+			"srvrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"scrName": {
 				"type": "string"
 			}
 		},
