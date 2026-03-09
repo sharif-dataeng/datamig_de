@@ -1,0 +1,11 @@
+{
+	"name": "ds_dynsrc",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://dbstorage6.blob.core.windows.net/",
+			"accountKind": "StorageV2"
+		}
+	}
+}
