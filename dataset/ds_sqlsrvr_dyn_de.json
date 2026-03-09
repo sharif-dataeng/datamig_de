@@ -1,0 +1,35 @@
+{
+	"name": "ds_sqlsrvr_dyn_de",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqlsrvr_dyn_de",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"srvrName": "DELL",
+				"dbName": "AdventureWorkMock",
+				"usrName": "benarji"
+			}
+		},
+		"parameters": {
+			"tblName": {
+				"type": "string"
+			},
+			"schName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tblName",
+				"type": "Expression"
+			}
+		}
+	}
+}
