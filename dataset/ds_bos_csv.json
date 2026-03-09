@@ -2,7 +2,7 @@
 	"name": "ds_bos_csv",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_dbstorage_de",
+			"referenceName": "ls_blobstorage_de",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

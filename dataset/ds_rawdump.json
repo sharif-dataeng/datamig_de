@@ -2,7 +2,7 @@
 	"name": "ds_rawdump",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_dbstorage_de",
+			"referenceName": "ls_blobstorage_de",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
