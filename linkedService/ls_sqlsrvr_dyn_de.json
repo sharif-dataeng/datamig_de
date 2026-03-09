@@ -3,16 +3,13 @@
 	"properties": {
 		"parameters": {
 			"srvrName": {
-				"type": "string",
-				"defaultValue": "DELL"
+				"type": "string"
 			},
 			"dbName": {
-				"type": "string",
-				"defaultValue": "AdventureWorkMock"
+				"type": "string"
 			},
 			"usrName": {
-				"type": "string",
-				"defaultValue": "benarji"
+				"type": "string"
 			}
 		},
 		"annotations": [],
