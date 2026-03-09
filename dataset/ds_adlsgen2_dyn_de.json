@@ -26,7 +26,8 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "sourcenew"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
