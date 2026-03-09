@@ -10,6 +10,9 @@
 			},
 			"usrName": {
 				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
