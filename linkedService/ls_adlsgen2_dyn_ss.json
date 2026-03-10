@@ -3,8 +3,7 @@
 	"properties": {
 		"parameters": {
 			"strgName": {
-				"type": "string",
-				"defaultValue": "dbstoragejgyrff2qoccg6"
+				"type": "string"
 			}
 		},
 		"annotations": [],
