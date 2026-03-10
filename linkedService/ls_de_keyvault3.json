@@ -2,9 +2,14 @@
 	"name": "ls_de_keyvault3",
 	"properties": {
 		"annotations": [],
+		"parameters": {
+			"KeyVaultBaseUrl": {
+				"type": "String"
+			}
+		},
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://de-keyvault3.vault.azure.net/"
+			"baseUrl": "@{linkedService().KeyVaultBaseUrl}"
 		}
 	}
 }
