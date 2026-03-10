@@ -1,7 +1,7 @@
 {
 	"name": "pl_sql_to_blb_dyn",
 	"properties": {
-		"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
+		"description": "This pipeline will copy data from on-premises SQL Server to Gen2 Blob storage dynamically.",
 		"activities": [
 			{
 				"name": "Copy data",
