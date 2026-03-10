@@ -21,7 +21,7 @@
 			"server": "@{linkedService().srvrName}",
 			"database": "@{linkedService().dbName}",
 			"encrypt": "mandatory",
-			"trustServerCertificate": true,
+			"trustServerCertificate": false,
 			"authenticationType": "SQL",
 			"userName": "@{linkedService().usrName}",
 			"password": {
