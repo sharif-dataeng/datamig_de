@@ -84,7 +84,7 @@
 								"type": "Expression"
 							},
 							"pathName": {
-								"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
+								"value": "@concat(pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
 								"type": "Expression"
 							},
 							"fileName": {
