@@ -98,32 +98,25 @@
 		],
 		"parameters": {
 			"schName": {
-				"type": "string",
-				"defaultValue": "Person"
+				"type": "string"
 			},
 			"tblName": {
-				"type": "string",
-				"defaultValue": "CountryRegion"
+				"type": "string"
 			},
 			"srvrName": {
-				"type": "string",
-				"defaultValue": "AaryanSharif\\SHARIF"
+				"type": "string"
 			},
 			"dbName": {
-				"type": "string",
-				"defaultValue": "AdventureWorkMock"
+				"type": "string"
 			},
 			"usrName": {
-				"type": "string",
-				"defaultValue": "sharif"
+				"type": "string"
 			},
 			"scrName": {
-				"type": "string",
-				"defaultValue": "sharif"
+				"type": "string"
 			},
 			"strgName": {
-				"type": "string",
-				"defaultValue": "dbstorage5"
+				"type": "string"
 			}
 		},
 		"annotations": []
