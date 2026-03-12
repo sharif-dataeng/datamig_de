@@ -179,6 +179,8 @@
 				"defaultValue": "dbstorage5"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2026-03-12T13:58:36Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
