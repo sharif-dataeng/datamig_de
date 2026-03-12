@@ -6,6 +6,26 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adwm-etl-dev"
+		},
+		"ls_adlsgen2_dyn_ss_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+		},
+		"ls_adwm_kv_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://adwm-kv.vault.azure.net/"
+		},
+		"ls_sqlsrvr_dyn_ss_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "@{linkedService().srvrName}"
+		},
+		"ls_sqlsrvr_dyn_ss_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().dbName}"
+		},
+		"ls_sqlsrvr_dyn_ss_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "@{linkedService().usrName}"
 		}
 	},
 	"variables": {
@@ -13,12 +33,537 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_sql_to_blb_dyn')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This pipeline will copy data from on-premises SQL Server to Gen2 Blob storage dynamically.",
+				"activities": [
+					{
+						"name": "Copy data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": true,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": false,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_sqlsrvr_dyn_ss",
+								"type": "DatasetReference",
+								"parameters": {
+									"tblName": {
+										"value": "@pipeline().parameters.tblName",
+										"type": "Expression"
+									},
+									"schName": {
+										"value": "@pipeline().parameters.schName",
+										"type": "Expression"
+									},
+									"srvrName": {
+										"value": "@pipeline().parameters.srvrName",
+										"type": "Expression"
+									},
+									"dbName": {
+										"value": "@pipeline().parameters.dbName",
+										"type": "Expression"
+									},
+									"usrName": {
+										"value": "@pipeline().parameters.usrName",
+										"type": "Expression"
+									},
+									"scrName": {
+										"value": "@pipeline().parameters.scrName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_adlsgen2_dyn_ss",
+								"type": "DatasetReference",
+								"parameters": {
+									"strgName": {
+										"value": "@pipeline().parameters.strgName",
+										"type": "Expression"
+									},
+									"pathName": {
+										"value": "@concat(pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"schName": {
+						"type": "string"
+					},
+					"tblName": {
+						"type": "string"
+					},
+					"srvrName": {
+						"type": "string"
+					},
+					"dbName": {
+						"type": "string"
+					},
+					"usrName": {
+						"type": "string"
+					},
+					"scrName": {
+						"type": "string"
+					},
+					"strgName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqlsrvr_dyn_ss')]",
+				"[concat(variables('factoryId'), '/datasets/ds_adlsgen2_dyn_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_sql_to_blb_dyn_v2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
+				"activities": [
+					{
+						"name": "Copy data",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_sqlsrvr_dyn_ss",
+								"type": "DatasetReference",
+								"parameters": {
+									"tblName": {
+										"value": "@pipeline().parameters.tblName",
+										"type": "Expression"
+									},
+									"schName": {
+										"value": "@pipeline().parameters.schName",
+										"type": "Expression"
+									},
+									"srvrName": {
+										"value": "@pipeline().parameters.srvrName",
+										"type": "Expression"
+									},
+									"dbName": {
+										"value": "@pipeline().parameters.dbName",
+										"type": "Expression"
+									},
+									"usrName": {
+										"value": "@pipeline().parameters.usrName",
+										"type": "Expression"
+									},
+									"scrName": {
+										"value": "@pipeline().parameters.scrName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_adlsgen2_dyn_ss",
+								"type": "DatasetReference",
+								"parameters": {
+									"strgName": {
+										"value": "@pipeline().parameters.strgName",
+										"type": "Expression"
+									},
+									"pathName": {
+										"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "LookupTable",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqlsrvr_dyn_ss",
+								"type": "DatasetReference",
+								"parameters": {
+									"tblName": {
+										"value": "@pipeline().parameters.tblName",
+										"type": "Expression"
+									},
+									"schName": {
+										"value": "@pipeline().parameters.schName",
+										"type": "Expression"
+									},
+									"srvrName": {
+										"value": "@pipeline().parameters.srvrName",
+										"type": "Expression"
+									},
+									"dbName": {
+										"value": "@pipeline().parameters.dbName",
+										"type": "Expression"
+									},
+									"usrName": {
+										"value": "@pipeline().parameters.usrName",
+										"type": "Expression"
+									},
+									"scrName": {
+										"value": "@pipeline().parameters.scrName",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"schName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"tblName": {
+						"type": "string",
+						"defaultValue": "DataLoad_Control"
+					},
+					"srvrName": {
+						"type": "string",
+						"defaultValue": "AaryanSharif\\SHARIF"
+					},
+					"dbName": {
+						"type": "string",
+						"defaultValue": "AdventureWorkMock"
+					},
+					"usrName": {
+						"type": "string",
+						"defaultValue": "sharif"
+					},
+					"scrName": {
+						"type": "string",
+						"defaultValue": "sharif"
+					},
+					"strgName": {
+						"type": "string",
+						"defaultValue": "dbstorage5"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqlsrvr_dyn_ss')]",
+				"[concat(variables('factoryId'), '/datasets/ds_adlsgen2_dyn_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_adlsgen2_dyn_ss')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adlsgen2_dyn_ss",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"strgName": {
+							"value": "@dataset().strgName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"strgName": {
+						"type": "string"
+					},
+					"pathName": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().pathName",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adlsgen2_dyn_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqlsrvr_dyn_ss')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sqlsrvr_dyn_ss",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"srvrName": {
+							"value": "@dataset().srvrName",
+							"type": "Expression"
+						},
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						},
+						"usrName": {
+							"value": "@dataset().usrName",
+							"type": "Expression"
+						},
+						"scrName": {
+							"value": "@dataset().scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"tblName": {
+						"type": "string"
+					},
+					"schName": {
+						"type": "string"
+					},
+					"srvrName": {
+						"type": "string"
+					},
+					"dbName": {
+						"type": "string"
+					},
+					"usrName": {
+						"type": "string"
+					},
+					"scrName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tblName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_sqlsrvr_dyn_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_adlsgen2_dyn_ss')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"strgName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_adlsgen2_dyn_ss_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_adwm_kv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_adwm_kv_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sqlsrvr_dyn_ss')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"srvrName": {
+						"type": "string"
+					},
+					"dbName": {
+						"type": "string"
+					},
+					"usrName": {
+						"type": "string"
+					},
+					"scrName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('ls_sqlsrvr_dyn_ss_properties_typeProperties_server')]",
+					"database": "[parameters('ls_sqlsrvr_dyn_ss_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_sqlsrvr_dyn_ss_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_adwm_kv",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "@linkedService().scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"connectVia": {
+					"referenceName": "ir-sharif-sh",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ir-sharif-sh')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_adwm_kv')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ir-sharif-sh')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"type": "SelfHosted",
-				"typeProperties": {}
+				"typeProperties": {
+					"selfContainedInteractiveAuthoringEnabled": true
+				}
 			},
 			"dependsOn": []
 		}

@@ -5,6 +5,21 @@
 		"factoryName": {
 			"value": "adwm-etl-dev"
 		},
+		"ls_adlsgen2_dyn_ss_properties_typeProperties_url": {
+			"value": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+		},
+		"ls_adwm_kv_properties_typeProperties_baseUrl": {
+			"value": "https://adwm-kv.vault.azure.net/"
+		},
+		"ls_sqlsrvr_dyn_ss_properties_typeProperties_server": {
+			"value": "@{linkedService().srvrName}"
+		},
+		"ls_sqlsrvr_dyn_ss_properties_typeProperties_database": {
+			"value": "@{linkedService().dbName}"
+		},
+		"ls_sqlsrvr_dyn_ss_properties_typeProperties_userName": {
+			"value": "@{linkedService().usrName}"
+		},
 		"containerUri": {
 			"value": ""
 		},
