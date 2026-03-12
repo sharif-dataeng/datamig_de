@@ -1,0 +1,95 @@
+{
+	"name": "ds_sql_srvr_dyn_ap",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqlsrvr_dyn_ss",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"srvrName": {
+					"value": "@dataset().srvrname",
+					"type": "Expression"
+				},
+				"dbName": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				},
+				"usrName": {
+					"value": "@dataset().usrname",
+					"type": "Expression"
+				},
+				"scrName": {
+					"value": "@dataset().scrtName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"srvrname": {
+				"type": "String"
+			},
+			"dbname": {
+				"type": "String"
+			},
+			"usrname": {
+				"type": "String"
+			},
+			"scrtName": {
+				"type": "String"
+			},
+			"schemaName": {
+				"type": "String"
+			},
+			"TblName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "schemaname",
+				"type": "varchar"
+			},
+			{
+				"name": "tablename",
+				"type": "varchar"
+			},
+			{
+				"name": "keycolumns",
+				"type": "varchar"
+			},
+			{
+				"name": "loadtype",
+				"type": "char"
+			},
+			{
+				"name": "isactive",
+				"type": "char"
+			},
+			{
+				"name": "watermark",
+				"type": "varchar"
+			},
+			{
+				"name": "loadedon",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "loadstatus",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TblName",
+				"type": "Expression"
+			}
+		}
+	}
+}
