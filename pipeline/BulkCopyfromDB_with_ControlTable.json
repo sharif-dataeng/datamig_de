@@ -45,6 +45,10 @@
 							"schemaName": {
 								"value": "@pipeline().parameters.SchemaName",
 								"type": "Expression"
+							},
+							"TblName": {
+								"value": "@pipeline().parameters.TblName",
+								"type": "Expression"
 							}
 						}
 					},
@@ -55,8 +59,6 @@
 				"name": "ForEachPartition",
 				"description": "ForEach activity to get the partition list from Lookup activity and then iterate each of them to Copy activity. ",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "GetPartitionList",
@@ -96,7 +98,15 @@
 									"partitionOption": "None"
 								},
 								"sink": {
-									"type": "DelimitedTextSink"
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
 								},
 								"enableStaging": false,
 								"dataIntegrationUnits": 0
