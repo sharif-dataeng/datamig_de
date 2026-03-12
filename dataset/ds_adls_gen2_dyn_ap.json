@@ -1,0 +1,43 @@
+{
+	"name": "ds_adls_gen2_dyn_ap",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adlsgen2_dyn_ss",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"strgName": {
+					"value": "@dataset().Strg_Name",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"Strg_Name": {
+				"type": "String"
+			},
+			"Dst_folder": {
+				"type": "String"
+			},
+			"File_Name": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().File_Name",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().Dst_folder",
+					"type": "Expression"
+				}
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
