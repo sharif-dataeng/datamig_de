@@ -3,7 +3,8 @@
 	"properties": {
 		"parameters": {
 			"strgName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "adwmstrg1"
 			}
 		},
 		"annotations": [],
