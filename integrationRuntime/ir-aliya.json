@@ -1,9 +1,0 @@
-{
-	"name": "ir-aliya",
-	"properties": {
-		"type": "SelfHosted",
-		"typeProperties": {
-			"selfContainedInteractiveAuthoringEnabled": false
-		}
-	}
-}
