@@ -2,14 +2,14 @@
 	"name": "ls_adlsgen2_dyn_ss",
 	"properties": {
 		"parameters": {
-			"strgName": {
+			"Strg_Acc_Name": {
 				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+			"url": "@{concat('https://',linkedService().Strg_Acc_Name,'.dfs.core.windows.net')}"
 		}
 	}
 }
