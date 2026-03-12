@@ -90,37 +90,81 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "SqlSource",
-									"sqlReaderQuery": {
-										"value": "@item().FilterQuery",
-										"type": "Expression"
-									},
+									"type": "SqlServerSource",
+									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
 								"sink": {
-									"type": "DelimitedTextSink",
+									"type": "ParquetSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
+										"type": "AzureBlobFSWriteSettings",
+										"blockSizeInMB": 100
 									},
 									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
+										"type": "ParquetWriteSettings"
 									}
 								},
 								"enableStaging": false,
-								"dataIntegrationUnits": 0
+								"dataIntegrationUnits": 0,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
-									"referenceName": "SqlServerDataSource3",
-									"type": "DatasetReference"
+									"referenceName": "ds_sql_srvr_dyn_ap",
+									"type": "DatasetReference",
+									"parameters": {
+										"srvrname": {
+											"value": "@pipeline().parameters.SrvrName",
+											"type": "Expression"
+										},
+										"dbname": {
+											"value": "@pipeline().parameters.DbName",
+											"type": "Expression"
+										},
+										"usrname": {
+											"value": "@pipeline().parameters.UserName",
+											"type": "Expression"
+										},
+										"scrtName": {
+											"value": "@pipeline().parameters.ScrtName",
+											"type": "Expression"
+										},
+										"schemaName": {
+											"value": "@item().schemaname",
+											"type": "Expression"
+										},
+										"TblName": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "DataDestination3",
-									"type": "DatasetReference"
+									"referenceName": "ds_adls_gen2_dyn_ap",
+									"type": "DatasetReference",
+									"parameters": {
+										"Strg_Name": {
+											"value": "@pipeline().parameters.Strg_Acc_Name",
+											"type": "Expression"
+										},
+										"Dst_folder": {
+											"value": "@concat(pipeline().parameters.UserName,'/',pipeline().parameters.DbName,'/',item().schemaname,'/',item().tablename)",
+											"type": "Expression"
+										},
+										"File_Name": {
+											"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.parquet')",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
@@ -146,6 +190,9 @@
 			},
 			"UserName": {
 				"type": "String"
+			},
+			"Strg_Acc_Name": {
+				"type": "string"
 			}
 		},
 		"annotations": []
