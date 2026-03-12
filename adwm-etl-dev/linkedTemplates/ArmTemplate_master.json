@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adwm-etl-dev"
 		},
-		"ir-rajurao-lsh_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/17ef3e82-d9f0-4bf0-9a44-d0f1af5fe972/resourcegroups/dataengineercrew/providers/Microsoft.DataFactory/factories/decrewadf/integrationruntimes/ir-sharif"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -37,9 +33,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"ir-rajurao-lsh_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('ir-rajurao-lsh_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
