@@ -1,0 +1,37 @@
+{
+	"name": "SqlServerExternal_ControlTable",
+	"properties": {
+		"description": "External control table to store high water mark value.",
+		"linkedServiceName": {
+			"referenceName": "ls_sqlsrvr_dyn_ss",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SrvrName": {
+				"type": "string"
+			},
+			"Dbname": {
+				"type": "string"
+			},
+			"SchemaName": {
+				"type": "string"
+			},
+			"Tble_Name": {
+				"type": "string"
+			},
+			"User_Name": {
+				"type": "string"
+			},
+			"ScrtName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "watermarktable"
+		}
+	}
+}
