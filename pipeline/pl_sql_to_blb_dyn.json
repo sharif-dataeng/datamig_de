@@ -123,7 +123,7 @@
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "dbstorage5"
+				"defaultValue": "adwmstrg1"
 			}
 		},
 		"annotations": []
