@@ -146,7 +146,21 @@
 							"outputs": [
 								{
 									"referenceName": "ds_adlsgen2_dyn_de",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"strgName": {
+											"value": "@pipeline().parameters.strgName",
+											"type": "Expression"
+										},
+										"pathName": {
+											"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/',item().tablename)",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
