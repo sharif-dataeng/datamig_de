@@ -152,7 +152,7 @@
 									"referenceName": "ds_adls_gen2_dyn_ap",
 									"type": "DatasetReference",
 									"parameters": {
-										"Strg_Name": {
+										"Strg_Acc_Name": {
 											"value": "@pipeline().parameters.Strg_Acc_Name",
 											"type": "Expression"
 										},

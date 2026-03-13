@@ -5,14 +5,14 @@
 			"referenceName": "ls_adlsgen2_dyn_ss",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"strgName": {
-					"value": "@dataset().Strg_Name",
+				"Strg_Acc_Name": {
+					"value": "@dataset().Strg_Acc_Name",
 					"type": "Expression"
 				}
 			}
 		},
 		"parameters": {
-			"Strg_Name": {
+			"Strg_Acc_Name": {
 				"type": "String"
 			},
 			"Dst_folder": {
