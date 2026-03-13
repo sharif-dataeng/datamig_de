@@ -27,7 +27,7 @@
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "ls_de_keyvault3",
+					"referenceName": "ls_adwm_kv",
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "benarji"
