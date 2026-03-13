@@ -11,10 +11,6 @@
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
-		},
-		"connectVia": {
-			"referenceName": "ir-benarji",
-			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
