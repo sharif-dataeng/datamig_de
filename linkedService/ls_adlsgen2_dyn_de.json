@@ -4,13 +4,17 @@
 		"parameters": {
 			"strgName": {
 				"type": "string",
-				"defaultValue": "dbstorage5"
+				"defaultValue": "adwmstrg1"
 			}
 		},
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+		},
+		"connectVia": {
+			"referenceName": "ir-benarji",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
