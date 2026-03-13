@@ -1,0 +1,184 @@
+{
+	"name": "pl_sql_to_blb_dyn_v2",
+	"properties": {
+		"description": "this pipeline will copy data from on prime sql server to gen2 blob storage dynamically",
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqlsrvr_dyn_de",
+						"type": "DatasetReference",
+						"parameters": {
+							"tblName": {
+								"value": "@pipeline().parameters.tblName",
+								"type": "Expression"
+							},
+							"schName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"srvrName": {
+								"value": "@pipeline().parameters.srvrName",
+								"type": "Expression"
+							},
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"usrName": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adlsgen2_dyn_de",
+						"type": "DatasetReference",
+						"parameters": {
+							"strgName": {
+								"value": "@pipeline().parameters.strgName",
+								"type": "Expression"
+							},
+							"pathName": {
+								"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@concat(pipeline().parameters.tblName, formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Lookup Table",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqlsrvr_dyn_de",
+						"type": "DatasetReference",
+						"parameters": {
+							"tblName": {
+								"value": "@pipeline().parameters.tblName",
+								"type": "Expression"
+							},
+							"schName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"srvrName": {
+								"value": "@pipeline().parameters.srvrName",
+								"type": "Expression"
+							},
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"usrName": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"parameters": {
+			"schName": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"tblName": {
+				"type": "string",
+				"defaultValue": "DataLoad_Control"
+			},
+			"srvrName": {
+				"type": "string",
+				"defaultValue": "DELL"
+			},
+			"dbName": {
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
+			},
+			"usrName": {
+				"type": "string",
+				"defaultValue": "benarji"
+			},
+			"scrName": {
+				"type": "string",
+				"defaultValue": "benarji"
+			},
+			"strgName": {
+				"type": "string",
+				"defaultValue": "adwmstrg1"
+			}
+		},
+		"annotations": []
+	}
+}
