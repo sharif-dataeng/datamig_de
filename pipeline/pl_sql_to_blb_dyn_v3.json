@@ -73,96 +73,121 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data",
-							"type": "Copy",
+							"name": "If Condition1",
+							"type": "IfCondition",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "SqlServerSource",
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
+								"expression": {
+									"value": "@equals(item().loadtype,'F')\n",
+									"type": "Expression"
 								},
-								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "ds_sqlsrvr_dyn_ss",
-									"type": "DatasetReference",
-									"parameters": {
-										"tblName": {
-											"value": "@item().tablename",
-											"type": "Expression"
-										},
-										"schName": {
-											"value": "@item().schemaname",
-											"type": "Expression"
-										},
-										"srvrName": {
-											"value": "@pipeline().parameters.srvrName",
-											"type": "Expression"
-										},
-										"dbName": {
-											"value": "@pipeline().parameters.dbName",
-											"type": "Expression"
-										},
-										"usrName": {
-											"value": "@pipeline().parameters.usrName",
-											"type": "Expression"
-										},
-										"scrName": {
-											"value": "@pipeline().parameters.scrName",
-											"type": "Expression"
+								"ifFalseActivities": [
+									{
+										"name": "Wait1",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 1
 										}
 									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "ds_adlsgen2_dyn_ss",
-									"type": "DatasetReference",
-									"parameters": {
-										"strgName": {
-											"value": "@pipeline().parameters.strgName",
-											"type": "Expression"
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Copy data",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
 										},
-										"pathName": {
-											"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/',item().tablename)",
-											"type": "Expression"
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "SqlServerSource",
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
 										},
-										"fileName": {
-											"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
-											"type": "Expression"
-										}
+										"inputs": [
+											{
+												"referenceName": "ds_sqlsrvr_dyn_ss",
+												"type": "DatasetReference",
+												"parameters": {
+													"tblName": {
+														"value": "@item().tablename",
+														"type": "Expression"
+													},
+													"schName": {
+														"value": "@item().schemaname",
+														"type": "Expression"
+													},
+													"srvrName": {
+														"value": "@pipeline().parameters.srvrName",
+														"type": "Expression"
+													},
+													"dbName": {
+														"value": "@pipeline().parameters.dbName",
+														"type": "Expression"
+													},
+													"usrName": {
+														"value": "@pipeline().parameters.usrName",
+														"type": "Expression"
+													},
+													"scrName": {
+														"value": "@pipeline().parameters.scrName",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_adlsgen2_dyn_ss",
+												"type": "DatasetReference",
+												"parameters": {
+													"strgName": {
+														"value": "@pipeline().parameters.strgName",
+														"type": "Expression"
+													},
+													"pathName": {
+														"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/',item().tablename)",
+														"type": "Expression"
+													},
+													"fileName": {
+														"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
 									}
-								}
-							]
+								]
+							}
 						}
 					]
 				}
@@ -195,7 +220,7 @@
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "dbstorage5"
+				"defaultValue": "adwmstrg1"
 			}
 		},
 		"annotations": []
