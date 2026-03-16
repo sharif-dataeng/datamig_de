@@ -1,0 +1,126 @@
+{
+	"name": "pl_sql_to_blb_dyn",
+	"properties": {
+		"description": "This pipeline will copy data from on-premises SQL Server to Gen2 Blob storage dynamically.",
+		"activities": [
+			{
+				"name": "Copy data",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": true
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": false,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqlsrvr_dyn_ss",
+						"type": "DatasetReference",
+						"parameters": {
+							"tblName": {
+								"value": "@pipeline().parameters.tblName",
+								"type": "Expression"
+							},
+							"schName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"srvrName": {
+								"value": "@pipeline().parameters.srvrName",
+								"type": "Expression"
+							},
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"usrName": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adlsgen2_dyn_ss",
+						"type": "DatasetReference",
+						"parameters": {
+							"strgName": {
+								"value": "@pipeline().parameters.strgName",
+								"type": "Expression"
+							},
+							"pathName": {
+								"value": "@concat(pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"schName": {
+				"type": "string"
+			},
+			"tblName": {
+				"type": "string"
+			},
+			"srvrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
+			},
+			"strgName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-03-12T13:58:36Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
