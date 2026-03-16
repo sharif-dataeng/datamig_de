@@ -1,5 +1,5 @@
 {
-	"name": "pl_sql_to_blb_dyn_v2",
+	"name": "pl_sql_to_blb_dyn_de_v2",
 	"properties": {
 		"description": "this pipeline will copy data from on prime sql server to gen2 blob storage dynamically",
 		"activities": [
