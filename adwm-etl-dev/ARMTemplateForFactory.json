@@ -158,7 +158,8 @@
 						"type": "string"
 					}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2026-03-12T13:58:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_sqlsrvr_dyn_ss')]",
@@ -351,7 +352,8 @@
 						"defaultValue": "dbstorage5"
 					}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2026-03-12T13:58:36Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_sqlsrvr_dyn_ss')]",
