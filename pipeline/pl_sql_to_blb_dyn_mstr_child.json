@@ -137,6 +137,14 @@
 												"strgName": {
 													"value": "@pipeline().parameters.strgName",
 													"type": "Expression"
+												},
+												"cntrlTbl": {
+													"value": "@pipeline().parameters.tblName",
+													"type": "Expression"
+												},
+												"cntrlTblSchm": {
+													"value": "@pipeline().parameters.schName",
+													"type": "Expression"
 												}
 											}
 										}

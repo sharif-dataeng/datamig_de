@@ -144,7 +144,7 @@
 						{
 							"type": "NonQuery",
 							"text": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrlTblSchm, '.', pipeline().parameters.cntrlTbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
+								"value": "@concat(\r\n    'UPDATE ',\r\n    pipeline().parameters.cntrlTblSchm, '.', pipeline().parameters.cntrlTbl,\r\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\r\n    'WHERE schemaname = ''', pipeline().parameters.schName,\r\n    ''' AND tablename = ''', pipeline().parameters.tblName, ''''\r\n)",
 								"type": "Expression"
 							}
 						}
