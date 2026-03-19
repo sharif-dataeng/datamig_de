@@ -1,0 +1,247 @@
+{
+	"name": "pl_sql_blb_incrload",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data incremental",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n    'SELECT * FROM ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' WHERE ',\n    pipeline().parameters.waterMark,\n    ' > ''',\n    pipeline().parameters.loadedOn,\n    ''''\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqlsrvr_dyn_ss",
+						"type": "DatasetReference",
+						"parameters": {
+							"tblName": {
+								"value": "@pipeline().parameters.tblName",
+								"type": "Expression"
+							},
+							"schName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"srvrName": {
+								"value": "@pipeline().parameters.srvrName",
+								"type": "Expression"
+							},
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"usrName": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adlsgen2_dyn_ss",
+						"type": "DatasetReference",
+						"parameters": {
+							"strgName": {
+								"value": "@pipeline().parameters.strgName",
+								"type": "Expression"
+							},
+							"pathName": {
+								"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/','incremental','/',pipeline().parameters.tblName)",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "update on incr load success",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy data incremental",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sqlsrvr_dyn_ss",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"srvrName": {
+							"value": "@pipeline().parameters.srvrName",
+							"type": "Expression"
+						},
+						"dbName": {
+							"value": "@pipeline().parameters.dbName",
+							"type": "Expression"
+						},
+						"usrName": {
+							"value": "@pipeline().parameters.usrName",
+							"type": "Expression"
+						},
+						"scrName": {
+							"value": "@pipeline().parameters.scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrlTblSchm, '.', pipeline().parameters.cntrlTbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "update on incr load fail",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy data incremental",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sqlsrvr_dyn_ss",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"srvrName": {
+							"value": "@pipeline().parameters.srvrName",
+							"type": "Expression"
+						},
+						"dbName": {
+							"value": "@pipeline().parameters.dbName",
+							"type": "Expression"
+						},
+						"usrName": {
+							"value": "@pipeline().parameters.usrName",
+							"type": "Expression"
+						},
+						"scrName": {
+							"value": "@pipeline().parameters.scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrlTblSchm, '.', pipeline().parameters.cntrlTbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"schName": {
+				"type": "string"
+			},
+			"tblName": {
+				"type": "string"
+			},
+			"srvrName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
+			},
+			"waterMark": {
+				"type": "string"
+			},
+			"loadedOn": {
+				"type": "string"
+			},
+			"strgName": {
+				"type": "string"
+			},
+			"cntrlTbl": {
+				"type": "string"
+			},
+			"cntrlTblSchm": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
