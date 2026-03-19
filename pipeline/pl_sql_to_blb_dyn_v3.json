@@ -103,7 +103,7 @@
 											"source": {
 												"type": "SqlServerSource",
 												"sqlReaderQuery": {
-													"value": "@concat(\r\n    'SELECT * FROM ',\r\n    item().schemaname, '.', item().tablename,\r\n    ' WHERE ',\r\n    item().watermark,\r\n    ' > ''',\r\n    item().loadedon,\r\n    ''''\r\n)",
+													"value": "@concat(\n    'SELECT * FROM ',\n    item().schemaname, '.', item().tablename,\n    ' WHERE ',\n    item().watermark,\n    ' > ''',\n    item().loadedon,\n    ''''\n)",
 													"type": "Expression"
 												},
 												"queryTimeout": "02:00:00",
