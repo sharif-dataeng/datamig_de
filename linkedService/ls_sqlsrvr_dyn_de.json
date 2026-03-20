@@ -3,16 +3,20 @@
 	"properties": {
 		"parameters": {
 			"srvrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DELL"
 			},
 			"dbName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
 			},
 			"usrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "benarji"
 			},
 			"scrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "benarji"
 			}
 		},
 		"annotations": [],
@@ -34,7 +38,7 @@
 			}
 		},
 		"connectVia": {
-			"referenceName": "ir-benarji",
+			"referenceName": "ir-benarji-sh",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
