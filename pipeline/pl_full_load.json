@@ -45,7 +45,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"srvrname": {
-								"value": "@pipeline().parameters.srvr_name",
+								"value": "@pipeline().parameters.srvrName",
 								"type": "Expression"
 							},
 							"dbname": {
@@ -116,7 +116,7 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"srvrName": {
-							"value": "@pipeline().parameters.srvr_name",
+							"value": "@pipeline().parameters.srvrName",
 							"type": "Expression"
 						},
 						"dbName": {
@@ -170,7 +170,7 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"srvrName": {
-							"value": "@pipeline().parameters.srvr_name",
+							"value": "@pipeline().parameters.srvrName",
 							"type": "Expression"
 						},
 						"dbName": {
@@ -202,7 +202,7 @@
 			}
 		],
 		"parameters": {
-			"srvr_name": {
+			"srvrName": {
 				"type": "String"
 			},
 			"user_name": {
