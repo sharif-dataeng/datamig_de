@@ -1,0 +1,237 @@
+{
+	"name": "pl_sql_to_blob_mstr_child",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetPartitionList",
+				"description": "Lookup activity to retrieve the list of partitions stored in the external control table.",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_srvr_dyn_ap",
+						"type": "DatasetReference",
+						"parameters": {
+							"srvrname": {
+								"value": "@pipeline().parameters.SrvrName",
+								"type": "Expression"
+							},
+							"dbname": {
+								"value": "@pipeline().parameters.DbName",
+								"type": "Expression"
+							},
+							"usrname": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrtName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							},
+							"schemaName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"TblName": {
+								"value": "@pipeline().parameters.TblName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachPartition",
+				"description": "ForEach activity to get the partition list from Lookup activity and then iterate each of them to Copy activity. ",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetPartitionList",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetPartitionList').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 5,
+					"activities": [
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(item().loadtype,'F')",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Execute Pipeline2",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"policy": {
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "pl_incr_load",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"srvr_name": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
+												"usr_name": {
+													"value": "@pipeline().parameters.usrName",
+													"type": "Expression"
+												},
+												"scrt_name": {
+													"value": "@pipeline().parameters.scrName",
+													"type": "Expression"
+												},
+												"schema_name": {
+													"value": "@item().schemaname",
+													"type": "Expression"
+												},
+												"tbl_name": {
+													"value": "@item().tablename",
+													"type": "Expression"
+												},
+												"watermark": {
+													"value": "@item().watermark",
+													"type": "Expression"
+												},
+												"loaded_on": {
+													"value": "@item().loaded_on",
+													"type": "Expression"
+												},
+												"strg_acc_name": {
+													"value": "@pipeline().parameters.strgName",
+													"type": "Expression"
+												},
+												"cntrltbl_schema": {
+													"value": "@pipeline().parameters.schName",
+													"type": "Expression"
+												},
+												"cntrl_tbl": {
+													"value": "@pipeline().parameters.tblName",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Execute Pipeline1",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"policy": {
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "pl_full_load",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"srvrName": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
+												"user_name": {
+													"value": "@pipeline().parameters.usrName",
+													"type": "Expression"
+												},
+												"scrt_name": {
+													"value": "@pipeline().parameters.scrName",
+													"type": "Expression"
+												},
+												"sch_name": {
+													"value": "@item().schemaname",
+													"type": "Expression"
+												},
+												"tbl_name": {
+													"value": "@item().tablename",
+													"type": "Expression"
+												},
+												"strg_Acc_name": {
+													"value": "@pipeline().parameters.strgName",
+													"type": "Expression"
+												},
+												"cntrl_tbl": {
+													"value": "@pipeline().parameters.tblName",
+													"type": "Expression"
+												},
+												"cntrltbl_schema": {
+													"value": "@pipeline().parameters.schName",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"srvr_name": {
+				"type": "string",
+				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
+			},
+			"dbName": {
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
+			},
+			"usrName": {
+				"type": "string",
+				"defaultValue": "akhil"
+			},
+			"schName": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"tblName": {
+				"type": "string",
+				"defaultValue": "DataLoad_Control"
+			},
+			"scrName": {
+				"type": "string",
+				"defaultValue": "akhil"
+			},
+			"strgName": {
+				"type": "string",
+				"defaultValue": " adwmstrg2"
+			}
+		},
+		"annotations": []
+	}
+}
