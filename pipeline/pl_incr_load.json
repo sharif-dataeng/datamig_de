@@ -1,0 +1,128 @@
+{
+	"name": "pl_incr_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n    'SELECT * FROM ',\n    pipeline().parameters.schema_name, '.', pipeline().parameters.tbl_name,\n    ' WHERE ',\n    pipeline().parameters.watermark,\n    ' > ''',\n    pipeline().parameters.loaded_on,\n    ''''\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sql_srvr_dyn_ap",
+						"type": "DatasetReference",
+						"parameters": {
+							"srvrname": {
+								"value": "@pipeline().parameters.srvr_name",
+								"type": "Expression"
+							},
+							"dbname": {
+								"value": "@pipeline().globalParameters.sql_db_name",
+								"type": "Expression"
+							},
+							"usrname": {
+								"value": "@pipeline().parameters.usr_name",
+								"type": "Expression"
+							},
+							"scrtName": {
+								"value": "@pipeline().parameters.scrt_name",
+								"type": "Expression"
+							},
+							"schemaName": {
+								"value": "@pipeline().parameters.schema_name",
+								"type": "Expression"
+							},
+							"TblName": {
+								"value": "@pipeline().parameters.tbl_name",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adls_gen2_dyn_ap",
+						"type": "DatasetReference",
+						"parameters": {
+							"Strg_Acc_Name": {
+								"value": "@pipeline().parameters.strg_acc_name",
+								"type": "Expression"
+							},
+							"Dst_folder": {
+								"value": "@concat(pipeline().parameters.usr_name,'/',pipeline().globalParameters.sql_db_name,'/',pipeline().parameters.schema_name,'/','incremental','/',pipeline().parameters.tbl_name)",
+								"type": "Expression"
+							},
+							"File_Name": {
+								"value": "@concat(pipeline().parameters.tbl_name,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.parquet')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"srvr_name": {
+				"type": "String"
+			},
+			"usr_name": {
+				"type": "String"
+			},
+			"scrt_name": {
+				"type": "String"
+			},
+			"schema_name": {
+				"type": "String"
+			},
+			"tbl_name": {
+				"type": "String"
+			},
+			"watermark": {
+				"type": "String"
+			},
+			"loaded_on": {
+				"type": "String"
+			},
+			"strg_acc_name": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
