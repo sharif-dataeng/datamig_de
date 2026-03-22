@@ -81,7 +81,11 @@
 								"type": "Expression"
 							},
 							"Dst_folder": {
-								"value": "@concat(pipeline().parameters.user_name,'/',pipeline().globalParameters.sql_db_name,'/',pipeline().pipeline().parameters.schema_name,'/','fullload','/',pipeline().parameters.tbl_name)",
+								"value": "@concat(pipeline().parameters.user_name,'/',pipeline().globalParameters.sql_db_name,'/',pipeline().parameters.sch_name,'/','fullload','/',pipeline().parameters.tbl_name)",
+								"type": "Expression"
+							},
+							"File_Name": {
+								"value": "@concat(pipeline().parameters.tbl_name,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.parquet')",
 								"type": "Expression"
 							}
 						}
