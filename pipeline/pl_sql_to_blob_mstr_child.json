@@ -160,10 +160,6 @@
 											},
 											"waitOnCompletion": true,
 											"parameters": {
-												"srvrName": {
-													"value": "@pipeline().parameters.srvr_name",
-													"type": "Expression"
-												},
 												"user_name": {
 													"value": "@pipeline().parameters.usrName",
 													"type": "Expression"
@@ -203,7 +199,7 @@
 			}
 		],
 		"parameters": {
-			"srvr_name": {
+			"srvrName": {
 				"type": "string",
 				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
 			},
