@@ -1,0 +1,114 @@
+{
+	"name": "pl_full_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sql_srvr_dyn_ap",
+						"type": "DatasetReference",
+						"parameters": {
+							"srvrname": {
+								"value": "@pipeline().parameters.srvr_name",
+								"type": "Expression"
+							},
+							"dbname": {
+								"value": "@pipeline().globalParameters.sql_db_name",
+								"type": "Expression"
+							},
+							"usrname": {
+								"value": "@pipeline().parameters.user_name",
+								"type": "Expression"
+							},
+							"scrtName": {
+								"value": "@pipeline().parameters.scrt_name",
+								"type": "Expression"
+							},
+							"schemaName": {
+								"value": "@pipeline().parameters.schema_name",
+								"type": "Expression"
+							},
+							"TblName": {
+								"value": "@pipeline().parameters.tbl_name",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adls_gen2_dyn_ap",
+						"type": "DatasetReference",
+						"parameters": {
+							"Strg_Acc_Name": {
+								"value": "@pipeline().parameters.strg_Acc_name",
+								"type": "Expression"
+							},
+							"Dst_folder": {
+								"value": "@concat(pipeline().parameters.user_name,'/',pipeline().globalParameters.sql_db_name,'/',pipeline().pipeline().parameters.schema_name,'/','fullload','/',pipeline().parameters.tbl_name)",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"srvr_name": {
+				"type": "String"
+			},
+			"user_name": {
+				"type": "String"
+			},
+			"scrt_name": {
+				"type": "String"
+			},
+			"sch_name": {
+				"type": "String"
+			},
+			"tbl_name": {
+				"type": "String"
+			},
+			"strg_Acc_name": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
