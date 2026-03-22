@@ -26,7 +26,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"srvrname": {
-								"value": "@pipeline().parameters.srvr_name",
+								"value": "@pipeline().parameters.srvrName",
 								"type": "Expression"
 							},
 							"dbname": {
@@ -101,7 +101,7 @@
 											"waitOnCompletion": true,
 											"parameters": {
 												"srvr_name": {
-													"value": "@pipeline().parameters.srvr_name",
+													"value": "@pipeline().parameters.srvrName",
 													"type": "Expression"
 												},
 												"usr_name": {
@@ -160,6 +160,10 @@
 											},
 											"waitOnCompletion": true,
 											"parameters": {
+												"srvrName": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
 												"user_name": {
 													"value": "@pipeline().parameters.usrName",
 													"type": "Expression"
