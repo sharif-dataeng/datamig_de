@@ -1,0 +1,76 @@
+{
+	"name": "ds_blob_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blobstorage_de",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "products-10000.csv",
+				"container": "rawdump"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Index",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "Brand",
+				"type": "String"
+			},
+			{
+				"name": "Category",
+				"type": "String"
+			},
+			{
+				"name": "Price",
+				"type": "String"
+			},
+			{
+				"name": "Currency",
+				"type": "String"
+			},
+			{
+				"name": "Stock",
+				"type": "String"
+			},
+			{
+				"name": "EAN",
+				"type": "String"
+			},
+			{
+				"name": "Color",
+				"type": "String"
+			},
+			{
+				"name": "Size",
+				"type": "String"
+			},
+			{
+				"name": "Availability",
+				"type": "String"
+			},
+			{
+				"name": "Internal ID",
+				"type": "String"
+			}
+		]
+	}
+}
