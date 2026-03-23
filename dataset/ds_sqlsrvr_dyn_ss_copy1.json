@@ -1,0 +1,38 @@
+{
+	"name": "ds_sqlsrvr_dyn_ss_copy1",
+	"properties": {
+		"parameters": {
+			"tblName": {
+				"type": "string"
+			},
+			"schName": {
+				"type": "string"
+			},
+			"srvrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tblName",
+				"type": "Expression"
+			}
+		}
+	}
+}
