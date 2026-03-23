@@ -10,6 +10,9 @@
 			},
 			"usrName": {
 				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -27,7 +30,10 @@
 					"referenceName": "ls_adwm_kv",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "sharif-cld"
+				"secretName": {
+					"value": "@linkedService().scrName",
+					"type": "Expression"
+				}
 			}
 		}
 	}
