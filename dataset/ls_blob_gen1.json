@@ -1,0 +1,30 @@
+{
+	"name": "ls_blob_gen1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_storage6_gen1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"pl_blob_storage": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": {
+					"value": "azure blob storage",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
