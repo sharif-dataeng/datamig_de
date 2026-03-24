@@ -1,0 +1,40 @@
+{
+	"name": "AzureSqlDatabase1",
+	"properties": {
+		"parameters": {
+			"srvrname": {
+				"type": "string"
+			},
+			"dbname": {
+				"type": "string"
+			},
+			"usr_name": {
+				"type": "string"
+			},
+			"scrt_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "@{concat(linkedService().srvrname,'.database.windows.net')}",
+			"database": "@{linkedService().dbname}",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "@{linkedService().usr_name}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_adwm_kv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().scrt_name",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
