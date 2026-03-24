@@ -170,22 +170,22 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "ls_sqlsrvr_dyn_ss",
+					"referenceName": "ls_sqlsrvr_dyn_ap",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"srvrName": {
+						"srvrname": {
 							"value": "@pipeline().parameters.srvr_name",
 							"type": "Expression"
 						},
-						"dbName": {
+						"dbname": {
 							"value": "@pipeline().globalParameters.sql_db_name",
 							"type": "Expression"
 						},
-						"usrName": {
+						"usr_name": {
 							"value": "@pipeline().parameters.usr_name",
 							"type": "Expression"
 						},
-						"scrName": {
+						"scr_name": {
 							"value": "@pipeline().parameters.scrt_name",
 							"type": "Expression"
 						}
