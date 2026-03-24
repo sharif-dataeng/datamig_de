@@ -2,10 +2,10 @@
 	"name": "ds_adls_gen2_dyn_ap",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_adlsgen2_dyn_ss",
+			"referenceName": "ls_adls_gen2_dyn_parq",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"Strg_Acc_Name": {
+				"strg_acc_name": {
 					"value": "@dataset().Strg_Acc_Name",
 					"type": "Expression"
 				}
