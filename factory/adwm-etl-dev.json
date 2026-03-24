@@ -13,6 +13,10 @@
 			"onprem_srvr_name": {
 				"type": "string",
 				"value": "Hp\\AKHIL_SQL_SERVER"
+			},
+			"cld_srvr_name": {
+				"type": "string",
+				"value": "dev1db"
 			}
 		}
 	},
