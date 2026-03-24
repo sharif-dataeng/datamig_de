@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n    'SELECT * FROM ',\n    pipeline().parameters.schema_name, '.', pipeline().parameters.tbl_name,\n    ' WHERE ',\n    pipeline().parameters.watermark,\n    ' > ''',\n    pipeline().parameters.loaded_on,\n    ''''\n)",
+							"value": "@concat(\n    'SELECT * FROM ',\n    pipeline().parameters.schema_name, '.', pipeline().globalParameters.cntrtbl_name,\n    ' WHERE ',\n    pipeline().parameters.watermark,\n    ' > ''',\n    pipeline().parameters.loadedon,\n    ''''\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -49,11 +49,11 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"srvrname": {
-								"value": "@pipeline().parameters.srvr_name",
+								"value": "@pipeline().globalParameters.onprem_srvr_name",
 								"type": "Expression"
 							},
 							"dbname": {
-								"value": "@pipeline().globalParameters.sql_db_name",
+								"value": "@pipeline().globalParameters.onprem_db_name",
 								"type": "Expression"
 							},
 							"usrname": {
@@ -61,7 +61,7 @@
 								"type": "Expression"
 							},
 							"scrtName": {
-								"value": "@pipeline().parameters.scrt_name",
+								"value": "@pipeline().globalParameters.onprem_scrt",
 								"type": "Expression"
 							},
 							"schemaName": {
@@ -69,7 +69,7 @@
 								"type": "Expression"
 							},
 							"TblName": {
-								"value": "@pipeline().parameters.tbl_name",
+								"value": "@pipeline().globalParameters.cntrtbl_name",
 								"type": "Expression"
 							}
 						}
@@ -85,11 +85,11 @@
 								"type": "Expression"
 							},
 							"Dst_folder": {
-								"value": "@concat(pipeline().parameters.usr_name,'/',pipeline().globalParameters.sql_db_name,'/',pipeline().parameters.schema_name,'/','incremental','/',pipeline().parameters.tbl_name)",
+								"value": "@concat(pipeline().parameters.usr_name,'/',pipeline().globalParameters.onprem_db_name,'/',pipeline().parameters.schema_name,'/','incremental','/',pipeline().globalParameters.cntrtbl_name)",
 								"type": "Expression"
 							},
 							"File_Name": {
-								"value": "@concat(pipeline().parameters.tbl_name,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.parquet')",
+								"value": "@concat(pipeline().globalParameters.cntrtbl_name,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.parquet')",
 								"type": "Expression"
 							}
 						}
@@ -120,11 +120,11 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"srvrname": {
-							"value": "@pipeline().parameters.srvr_name",
+							"value": "@pipeline().globalParameters.onprem_srvr_name",
 							"type": "Expression"
 						},
 						"dbname": {
-							"value": "@pipeline().globalParameters.sql_db_name",
+							"value": "@pipeline().globalParameters.onprem_db_name",
 							"type": "Expression"
 						},
 						"usr_name": {
@@ -132,7 +132,7 @@
 							"type": "Expression"
 						},
 						"scr_name": {
-							"value": "@pipeline().parameters.scrt_name",
+							"value": "@pipeline().globalParameters.onprem_scrt",
 							"type": "Expression"
 						}
 					}
@@ -151,7 +151,7 @@
 				}
 			},
 			{
-				"name": "Script2",
+				"name": "incremental on_failure",
 				"type": "Script",
 				"dependsOn": [
 					{
@@ -174,11 +174,11 @@
 					"type": "LinkedServiceReference",
 					"parameters": {
 						"srvrname": {
-							"value": "@pipeline().parameters.srvr_name",
+							"value": "@pipeline().globalParameters.onprem_srvr_name",
 							"type": "Expression"
 						},
 						"dbname": {
-							"value": "@pipeline().globalParameters.sql_db_name",
+							"value": "@pipeline().globalParameters.onprem_db_name",
 							"type": "Expression"
 						},
 						"usr_name": {
@@ -186,7 +186,7 @@
 							"type": "Expression"
 						},
 						"scr_name": {
-							"value": "@pipeline().parameters.scrt_name",
+							"value": "@pipeline().globalParameters.onprem_scrt",
 							"type": "Expression"
 						}
 					}
@@ -196,7 +196,7 @@
 						{
 							"type": "NonQuery",
 							"text": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrltbl_schema, '.', pipeline().parameters.cntrl_tbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schema_name,\n    ''' AND tablename = ''', pipeline().parameters.tbl_name, ''''\n)",
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrltbl_schema, '.', pipeline().globalParameters.cntrtbl_name,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schema_name,\n    ''' AND tablename = ''', pipeline().parameters.tbl_name, ''''\n)",
 								"type": "Expression"
 							}
 						}
@@ -206,25 +206,16 @@
 			}
 		],
 		"parameters": {
-			"srvr_name": {
-				"type": "String"
-			},
 			"usr_name": {
-				"type": "String"
-			},
-			"scrt_name": {
 				"type": "String"
 			},
 			"schema_name": {
 				"type": "String"
 			},
-			"tbl_name": {
-				"type": "String"
-			},
 			"watermark": {
 				"type": "String"
 			},
-			"loaded_on": {
+			"loadedon": {
 				"type": "String"
 			},
 			"strg_acc_name": {
