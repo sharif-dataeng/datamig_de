@@ -55,22 +55,10 @@
 			}
 		],
 		"parameters": {
-			"srvrname": {
-				"type": "string"
-			},
-			"dbname": {
-				"type": "string"
-			},
 			"usrname": {
 				"type": "string"
 			},
 			"scrtname": {
-				"type": "string"
-			},
-			"sch_name": {
-				"type": "string"
-			},
-			"tbl_name": {
 				"type": "string"
 			}
 		},
