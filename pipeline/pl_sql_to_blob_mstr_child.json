@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "GetPartitionList",
-				"description": "Lookup activity to retrieve the list of partitions stored in the external control table.",
+				"name": "GetTablesList",
+				"description": "Lookup activity to retrieve the list of tables stored in the external control table.",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -60,7 +60,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "GetPartitionList",
+						"activity": "GetTablesList",
 						"dependencyConditions": [
 							"Succeeded"
 						]
