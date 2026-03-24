@@ -139,7 +139,33 @@
 							"outputs": [
 								{
 									"referenceName": "ds_cld_sqldb_dyn",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"Tsrvrname": {
+											"value": "@pipeline().globalParameters.cld_srvr_name",
+											"type": "Expression"
+										},
+										"T_db_name": {
+											"value": "@pipeline().globalParameters.cld_db_name",
+											"type": "Expression"
+										},
+										"T_usr_name": {
+											"value": "@pipeline().parameters.usrname",
+											"type": "Expression"
+										},
+										"T_scrt_name": {
+											"value": "@pipeline().globalParameters.cld_scrt",
+											"type": "Expression"
+										},
+										"t_schema_name": {
+											"value": "@item().schemaname",
+											"type": "Expression"
+										},
+										"t_table_name": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}

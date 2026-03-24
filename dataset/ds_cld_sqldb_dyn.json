@@ -5,19 +5,56 @@
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"srvrname": {
-					"value": "@dataset().srvrname",
+				"Tsrvrname": {
+					"value": "@dataset().Tsrvrname",
+					"type": "Expression"
+				},
+				"T_dbname": {
+					"value": "@dataset().T_db_name",
+					"type": "Expression"
+				},
+				"T_usr_name": {
+					"value": "@dataset().T_usr_name",
+					"type": "Expression"
+				},
+				"T_scrt_name": {
+					"value": "@dataset().T_scrt_name",
 					"type": "Expression"
 				}
 			}
 		},
 		"parameters": {
-			"srvrname": {
+			"Tsrvrname": {
 				"type": "String"
+			},
+			"T_db_name": {
+				"type": "String"
+			},
+			"T_usr_name": {
+				"type": "String"
+			},
+			"T_scrt_name": {
+				"type": "String"
+			},
+			"t_schema_name": {
+				"type": "string"
+			},
+			"t_table_name": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().t_schema_name",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().t_table_name",
+				"type": "Expression"
+			}
+		}
 	}
 }
