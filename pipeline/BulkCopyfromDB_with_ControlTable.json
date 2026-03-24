@@ -56,8 +56,8 @@
 				}
 			},
 			{
-				"name": "ForEachPartition",
-				"description": "ForEach activity to get the partition list from Lookup activity and then iterate each of them to Copy activity. ",
+				"name": "ForEachTable",
+				"description": "ForEach activity to get the table list from Lookup activity and then iterate each of them to Copy activity. ",
 				"type": "ForEach",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
