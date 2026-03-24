@@ -2,22 +2,22 @@
 	"name": "ds_sql_srvr_dyn_ap",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqlsrvr_dyn_ss",
+			"referenceName": "ls_sqlsrvr_dyn_ap",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"srvrName": {
+				"srvrname": {
 					"value": "@dataset().srvrname",
 					"type": "Expression"
 				},
-				"dbName": {
+				"dbname": {
 					"value": "@dataset().dbname",
 					"type": "Expression"
 				},
-				"usrName": {
+				"usr_name": {
 					"value": "@dataset().usrname",
 					"type": "Expression"
 				},
-				"scrName": {
+				"scr_name": {
 					"value": "@dataset().scrtName",
 					"type": "Expression"
 				}
