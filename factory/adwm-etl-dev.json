@@ -17,6 +17,10 @@
 			"cld_srvr_name": {
 				"type": "string",
 				"value": "dev1db"
+			},
+			"cntrtbl_name": {
+				"type": "string",
+				"value": "DataLoad_Control"
 			}
 		}
 	},
