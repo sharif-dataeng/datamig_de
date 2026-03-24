@@ -21,6 +21,10 @@
 			"cntrtbl_name": {
 				"type": "string",
 				"value": "DataLoad_Control"
+			},
+			"onprem-scrt": {
+				"type": "string",
+				"value": "akhil"
 			}
 		}
 	},
