@@ -68,10 +68,6 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"items": {
-						"value": "@activity('GetPartitionList').output.value",
-						"type": "Expression"
-					},
 					"batchCount": 5,
 					"activities": [
 						{
