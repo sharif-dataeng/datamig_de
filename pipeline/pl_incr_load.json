@@ -142,7 +142,7 @@
 						{
 							"type": "NonQuery",
 							"text": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrltbl_schema, '.', pipeline().parameters.cntrl_tbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''',pipeline().parameters.schema_name, ''' AND tablename = ''', pipeline().parameters.tbl_name, ''''\n)",
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrltbl_schema, '.', pipeline().globalParameters.cntrtbl_name,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''',pipeline().parameters.schema_name, ''' AND tablename = ''', pipeline().globalParameters.cntrtbl_name, ''''\n)",
 								"type": "Expression"
 							}
 						}
@@ -196,7 +196,7 @@
 						{
 							"type": "NonQuery",
 							"text": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrltbl_schema, '.', pipeline().globalParameters.cntrtbl_name,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schema_name,\n    ''' AND tablename = ''', pipeline().parameters.tbl_name, ''''\n)",
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrltbl_schema, '.', pipeline().globalParameters.cntrtbl_name,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schema_name,\n    ''' AND tablename = ''', pipeline().globalParameters.cntrtbl_name, ''''\n)",
 								"type": "Expression"
 							}
 						}
@@ -222,9 +222,6 @@
 				"type": "String"
 			},
 			"cntrltbl_schema": {
-				"type": "String"
-			},
-			"cntrl_tbl": {
 				"type": "String"
 			}
 		},

@@ -26,11 +26,11 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"srvrname": {
-								"value": "@pipeline().parameters.srvrName",
+								"value": "@pipeline().globalParameters.onprem_srvr_name",
 								"type": "Expression"
 							},
 							"dbname": {
-								"value": "@pipeline().parameters.DbName",
+								"value": "@pipeline().globalParameters.onprem_db_name",
 								"type": "Expression"
 							},
 							"usrname": {
@@ -38,7 +38,7 @@
 								"type": "Expression"
 							},
 							"scrtName": {
-								"value": "@pipeline().parameters.scrName",
+								"value": "@pipeline().globalParameters.onprem_scrt",
 								"type": "Expression"
 							},
 							"schemaName": {
@@ -46,7 +46,7 @@
 								"type": "Expression"
 							},
 							"TblName": {
-								"value": "@pipeline().parameters.TblName",
+								"value": "@pipeline().globalParameters.cntrtbl_name",
 								"type": "Expression"
 							}
 						}
@@ -100,31 +100,19 @@
 											},
 											"waitOnCompletion": true,
 											"parameters": {
-												"srvr_name": {
-													"value": "@pipeline().parameters.srvrName",
-													"type": "Expression"
-												},
 												"usr_name": {
 													"value": "@pipeline().parameters.usrName",
-													"type": "Expression"
-												},
-												"scrt_name": {
-													"value": "@pipeline().parameters.scrName",
 													"type": "Expression"
 												},
 												"schema_name": {
 													"value": "@item().schemaname",
 													"type": "Expression"
 												},
-												"tbl_name": {
-													"value": "@item().tablename",
-													"type": "Expression"
-												},
 												"watermark": {
 													"value": "@item().watermark",
 													"type": "Expression"
 												},
-												"loaded_on": {
+												"loadedon": {
 													"value": "@item().loadedon",
 													"type": "Expression"
 												},
@@ -134,10 +122,6 @@
 												},
 												"cntrltbl_schema": {
 													"value": "@pipeline().parameters.schName",
-													"type": "Expression"
-												},
-												"cntrl_tbl": {
-													"value": "@pipeline().parameters.tblName",
 													"type": "Expression"
 												}
 											}
@@ -160,24 +144,12 @@
 											},
 											"waitOnCompletion": true,
 											"parameters": {
-												"srvrName": {
-													"value": "@pipeline().parameters.srvrName",
-													"type": "Expression"
-												},
 												"user_name": {
 													"value": "@pipeline().parameters.usrName",
 													"type": "Expression"
 												},
-												"scrt_name": {
-													"value": "@pipeline().parameters.scrName",
-													"type": "Expression"
-												},
 												"sch_name": {
 													"value": "@item().schemaname",
-													"type": "Expression"
-												},
-												"tbl_name": {
-													"value": "@item().tablename",
 													"type": "Expression"
 												},
 												"strg_Acc_name": {
@@ -185,7 +157,7 @@
 													"type": "Expression"
 												},
 												"cntrl_tbl": {
-													"value": "@pipeline().parameters.tblName",
+													"value": "@pipeline().globalParameters.cntrtbl_name",
 													"type": "Expression"
 												},
 												"cntrltbl_schema": {
@@ -203,14 +175,6 @@
 			}
 		],
 		"parameters": {
-			"srvrName": {
-				"type": "string",
-				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
-			},
-			"dbName": {
-				"type": "string",
-				"defaultValue": "AdventureWorkMock"
-			},
 			"usrName": {
 				"type": "string",
 				"defaultValue": "akhil"
@@ -222,10 +186,6 @@
 			"tblName": {
 				"type": "string",
 				"defaultValue": "DataLoad_Control"
-			},
-			"scrName": {
-				"type": "string",
-				"defaultValue": "akhil"
 			},
 			"strgName": {
 				"type": "string",
