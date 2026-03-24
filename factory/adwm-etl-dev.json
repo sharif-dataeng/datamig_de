@@ -5,6 +5,10 @@
 			"onprem_db_name": {
 				"type": "string",
 				"value": "AdventureWorkMock"
+			},
+			"cld_db_name": {
+				"type": "string",
+				"value": "dev1db"
 			}
 		}
 	},
