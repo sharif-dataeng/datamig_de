@@ -1,5 +1,13 @@
 {
 	"name": "adwm-etl-dev",
+	"properties": {
+		"globalParameters": {
+			"onprem_dbname": {
+				"type": "string",
+				"value": "AdventureWorkMock"
+			}
+		}
+	},
 	"location": "southindia",
 	"identity": {
 		"type": "SystemAssigned",
