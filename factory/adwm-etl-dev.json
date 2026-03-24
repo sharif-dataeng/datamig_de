@@ -26,7 +26,7 @@
 				"type": "string",
 				"value": "akhil"
 			},
-			"cld-scrt": {
+			"cld_scrt": {
 				"type": "string",
 				"value": "akhil-cld"
 			}
