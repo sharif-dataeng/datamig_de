@@ -25,6 +25,10 @@
 			"onprem-scrt": {
 				"type": "string",
 				"value": "akhil"
+			},
+			"cld-scrt": {
+				"type": "string",
+				"value": "akhil-cld"
 			}
 		}
 	},
