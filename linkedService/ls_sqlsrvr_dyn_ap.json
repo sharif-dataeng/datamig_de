@@ -1,0 +1,44 @@
+{
+	"name": "ls_sqlsrvr_dyn_ap",
+	"properties": {
+		"parameters": {
+			"srvrname": {
+				"type": "string"
+			},
+			"dbname": {
+				"type": "string"
+			},
+			"usr_name": {
+				"type": "string"
+			},
+			"scr_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "@{linkedService().srvrname}",
+			"database": "@{linkedService().dbname}",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "@{linkedService().usr_name}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_adwm_kv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().scr_name",
+					"type": "Expression"
+				}
+			}
+		},
+		"connectVia": {
+			"referenceName": "ir-akhil",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
