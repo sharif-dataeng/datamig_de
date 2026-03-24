@@ -1,0 +1,23 @@
+{
+	"name": "ds_cld_sqldb_dyn",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"srvrname": {
+					"value": "@dataset().srvrname",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"srvrname": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
