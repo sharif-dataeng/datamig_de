@@ -22,7 +22,7 @@
 				"type": "string",
 				"value": "DataLoad_Control"
 			},
-			"onprem-scrt": {
+			"onprem_scrt": {
 				"type": "string",
 				"value": "akhil"
 			},
