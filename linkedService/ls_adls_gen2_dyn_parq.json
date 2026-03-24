@@ -1,0 +1,15 @@
+{
+	"name": "ls_adls_gen2_dyn_parq",
+	"properties": {
+		"parameters": {
+			"strg_acc_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "@{concat('https://',linkedService().strg_acc_name,'.dfs.core.windows.net')}"
+		}
+	}
+}
