@@ -68,6 +68,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('GetTablesList').output.value",
+						"type": "Expression"
+					},
 					"batchCount": 5,
 					"activities": [
 						{
@@ -82,7 +86,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Execute Pipeline2",
+										"name": "incremental_load",
 										"type": "ExecutePipeline",
 										"dependsOn": [],
 										"policy": {
@@ -142,7 +146,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Execute Pipeline1",
+										"name": "full_load",
 										"type": "ExecutePipeline",
 										"dependsOn": [],
 										"policy": {
