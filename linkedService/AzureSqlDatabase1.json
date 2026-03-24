@@ -18,12 +18,12 @@
 		"annotations": [],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
-			"server": "@{concat(linkedService().srvrname,'.database.windows.net')}",
-			"database": "@{linkedService().dbname}",
+			"server": "@{concat(linkedService().Tsrvrname,'.database.windows.net')}",
+			"database": "@{linkedService().T_dbname}",
 			"encrypt": "mandatory",
 			"trustServerCertificate": true,
 			"authenticationType": "SQL",
-			"userName": "@{linkedService().usr_name}",
+			"userName": "@{linkedService().T_usr_name}",
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
@@ -31,7 +31,7 @@
 					"type": "LinkedServiceReference"
 				},
 				"secretName": {
-					"value": "@linkedService().scrt_name",
+					"value": "@linkedService().T_scrt_name",
 					"type": "Expression"
 				}
 			}
