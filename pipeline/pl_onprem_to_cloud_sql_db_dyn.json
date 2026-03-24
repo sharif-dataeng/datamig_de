@@ -1,0 +1,79 @@
+{
+	"name": "pl_onprem_to_cloud_sql_db_dyn",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetTablesList",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_srvr_dyn_ap",
+						"type": "DatasetReference",
+						"parameters": {
+							"srvrname": {
+								"value": "@pipeline().globalParameters.onprem_srvr_name",
+								"type": "Expression"
+							},
+							"dbname": {
+								"value": "@pipeline().globalParameters.onprem_db_name",
+								"type": "Expression"
+							},
+							"usrname": {
+								"value": "@pipeline().parameters.usrname",
+								"type": "Expression"
+							},
+							"scrtName": {
+								"value": "@pipeline().parameters.scrtname",
+								"type": "Expression"
+							},
+							"schemaName": {
+								"value": "@pipeline().parameters.sch_name",
+								"type": "Expression"
+							},
+							"TblName": {
+								"value": "@pipeline().parameters.tbl_name",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"parameters": {
+			"srvrname": {
+				"type": "string"
+			},
+			"dbname": {
+				"type": "string"
+			},
+			"usrname": {
+				"type": "string"
+			},
+			"scrtname": {
+				"type": "string"
+			},
+			"sch_name": {
+				"type": "string"
+			},
+			"tbl_name": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
