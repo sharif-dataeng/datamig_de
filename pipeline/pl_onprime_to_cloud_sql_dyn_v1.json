@@ -4,15 +4,15 @@
 		"description": "This pipeline will copy data from on-premises SQL Server to Gen2 Blob storage dynamically.",
 		"activities": [
 			{
-				"name": "Copy data",
-				"type": "Copy",
+				"name": "Lookup Table List",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
-					"secureOutput": true,
-					"secureInput": true
+					"secureOutput": false,
+					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
@@ -21,25 +21,7 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": false,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
+					"dataset": {
 						"referenceName": "ds_sqlsrvr_dyn_ss",
 						"type": "DatasetReference",
 						"parameters": {
@@ -68,50 +50,140 @@
 								"type": "Expression"
 							}
 						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup Table List",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
-				"outputs": [
-					{
-						"referenceName": "ds_sqlsrvr_cld_dyn_ss",
-						"type": "DatasetReference",
-						"parameters": {
-							"srvrName": {
-								"value": "@pipeline().parameters.t_srvrName",
-								"type": "Expression"
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup Table List').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": true,
+								"secureInput": true
 							},
-							"dbName": {
-								"value": "@pipeline().parameters.t_dbName",
-								"type": "Expression"
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": false,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
-							"usrName": {
-								"value": "@pipeline().parameters.t_usrName",
-								"type": "Expression"
-							},
-							"scrName": {
-								"value": "@pipeline().parameters.t_scrName",
-								"type": "Expression"
-							},
-							"schName": {
-								"value": "@pipeline().parameters.s_schName",
-								"type": "Expression"
-							},
-							"tblName": {
-								"value": "@pipeline().parameters.s_tblName",
-								"type": "Expression"
-							}
+							"inputs": [
+								{
+									"referenceName": "ds_sqlsrvr_dyn_ss",
+									"type": "DatasetReference",
+									"parameters": {
+										"tblName": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										},
+										"schName": {
+											"value": "@item().schemaname",
+											"type": "Expression"
+										},
+										"srvrName": {
+											"value": "@pipeline().parameters.s_srvrName",
+											"type": "Expression"
+										},
+										"dbName": {
+											"value": "@pipeline().parameters.s_dbName",
+											"type": "Expression"
+										},
+										"usrName": {
+											"value": "@pipeline().parameters.s_usrName",
+											"type": "Expression"
+										},
+										"scrName": {
+											"value": "@pipeline().parameters.s_scrName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sqlsrvr_cld_dyn_ss",
+									"type": "DatasetReference",
+									"parameters": {
+										"srvrName": {
+											"value": "@pipeline().parameters.t_srvrName",
+											"type": "Expression"
+										},
+										"dbName": {
+											"value": "@pipeline().parameters.t_dbName",
+											"type": "Expression"
+										},
+										"usrName": {
+											"value": "@pipeline().parameters.t_usrName",
+											"type": "Expression"
+										},
+										"scrName": {
+											"value": "@pipeline().parameters.t_scrName",
+											"type": "Expression"
+										},
+										"schName": {
+											"value": "@item().schemaname",
+											"type": "Expression"
+										},
+										"tblName": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
-					}
-				]
+					]
+				}
 			}
 		],
 		"parameters": {
 			"s_schName": {
 				"type": "string",
-				"defaultValue": "person"
+				"defaultValue": "dbo"
 			},
 			"s_tblName": {
 				"type": "string",
-				"defaultValue": "address"
+				"defaultValue": "DataLoad_Control"
 			},
 			"s_srvrName": {
 				"type": "string",
