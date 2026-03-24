@@ -2,7 +2,7 @@
 	"name": "adwm-etl-dev",
 	"properties": {
 		"globalParameters": {
-			"sql_db_name": {
+			"onprem_db_name": {
 				"type": "string",
 				"value": "AdventureWorkMock"
 			}
