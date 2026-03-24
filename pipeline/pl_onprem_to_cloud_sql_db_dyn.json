@@ -37,15 +37,15 @@
 								"type": "Expression"
 							},
 							"scrtName": {
-								"value": "@pipeline().parameters.scrtname",
+								"value": "@pipeline().globalParameters.onprem-scrt",
 								"type": "Expression"
 							},
 							"schemaName": {
-								"value": "@pipeline().parameters.sch_name",
+								"value": "@pipeline().parameters.schema_name",
 								"type": "Expression"
 							},
 							"TblName": {
-								"value": "@pipeline().parameters.tbl_name",
+								"value": "@pipeline().globalParameters.cld_db_name",
 								"type": "Expression"
 							}
 						}
@@ -56,10 +56,12 @@
 		],
 		"parameters": {
 			"usrname": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "akhil"
 			},
-			"scrtname": {
-				"type": "string"
+			"schema_name": {
+				"type": "string",
+				"defaultValue": "dbo"
 			}
 		},
 		"annotations": []
