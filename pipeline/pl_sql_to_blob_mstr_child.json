@@ -125,7 +125,7 @@
 													"type": "Expression"
 												},
 												"loaded_on": {
-													"value": "@item().loaded_on",
+													"value": "@item().loadedon",
 													"type": "Expression"
 												},
 												"strg_acc_name": {
