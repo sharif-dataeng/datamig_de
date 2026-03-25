@@ -1,0 +1,7 @@
+{
+	"name": "SqlServer_dyn_sa",
+	"properties": {
+		"type": "SqlServer",
+		"annotations": []
+	}
+}

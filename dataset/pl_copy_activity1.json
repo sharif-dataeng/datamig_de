@@ -1,0 +1,56 @@
+{
+	"name": "pl_copy_activity1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "AdventureWorkMock/Person/PersonPhone",
+				"container": "benarji"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "schemaname",
+				"type": "String"
+			},
+			{
+				"name": "tablename",
+				"type": "String"
+			},
+			{
+				"name": "keycolumns",
+				"type": "String"
+			},
+			{
+				"name": "loadtype",
+				"type": "String"
+			},
+			{
+				"name": "isactive",
+				"type": "String"
+			},
+			{
+				"name": "watermark",
+				"type": "String"
+			},
+			{
+				"name": "loadedon",
+				"type": "String"
+			},
+			{
+				"name": "loadstatus",
+				"type": "String"
+			}
+		]
+	}
+}
