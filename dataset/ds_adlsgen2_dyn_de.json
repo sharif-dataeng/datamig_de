@@ -1,8 +1,8 @@
 {
-	"name": "ds_adlsgen2_dyn_ss",
+	"name": "ds_adlsgen2_dyn_de",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_adlsgen2_dyn_ss",
+			"referenceName": "ls_adlsgen2_dyn_de",
 			"type": "LinkedServiceReference",
 			"parameters": {
 				"strgName": {
@@ -42,6 +42,5 @@
 			"quoteChar": "\""
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

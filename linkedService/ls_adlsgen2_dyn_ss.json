@@ -1,9 +1,13 @@
 {
 	"name": "ls_adlsgen2_dyn_ss",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"parameters": {
 			"Strg_Acc_Name": {
 				"type": "string"
+			"strgName": {
+				"type": "string",
+				"defaultValue": "adwmstrg1"
 			}
 		},
 		"annotations": [],

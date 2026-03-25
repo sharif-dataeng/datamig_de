@@ -1,10 +1,10 @@
 {
-	"name": "pl_sql_to_blb_dyn_v2",
+	"name": "pl_sql_to_blb_dyn_de_v2",
 	"properties": {
-		"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
+		"description": "this pipeline will copy data from on prime sql server to gen2 blob storage dynamically",
 		"activities": [
 			{
-				"name": "Copy data",
+				"name": "Copy data1",
 				"type": "Copy",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
@@ -46,7 +46,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_sqlsrvr_dyn_ss",
+						"referenceName": "ds_sqlsrvr_dyn_de",
 						"type": "DatasetReference",
 						"parameters": {
 							"tblName": {
@@ -78,7 +78,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_adlsgen2_dyn_ss",
+						"referenceName": "ds_adlsgen2_dyn_de",
 						"type": "DatasetReference",
 						"parameters": {
 							"strgName": {
@@ -90,7 +90,7 @@
 								"type": "Expression"
 							},
 							"fileName": {
-								"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"value": "@concat(pipeline().parameters.tblName, formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
 								"type": "Expression"
 							}
 						}
@@ -98,7 +98,7 @@
 				]
 			},
 			{
-				"name": "LookupTable",
+				"name": "Lookup Table",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -116,7 +116,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_sqlsrvr_dyn_ss",
+						"referenceName": "ds_sqlsrvr_dyn_de",
 						"type": "DatasetReference",
 						"parameters": {
 							"tblName": {
@@ -160,7 +160,7 @@
 			},
 			"srvrName": {
 				"type": "string",
-				"defaultValue": "AaryanSharif\\SHARIF"
+				"defaultValue": "DELL"
 			},
 			"dbName": {
 				"type": "string",
@@ -168,15 +168,15 @@
 			},
 			"usrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "benarji"
 			},
 			"scrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "benarji"
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "dbstorage5"
+				"defaultValue": "adwmstrg1"
 			}
 		},
 		"annotations": []

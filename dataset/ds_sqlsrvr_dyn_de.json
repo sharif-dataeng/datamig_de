@@ -1,8 +1,8 @@
 {
-	"name": "ds_sqlsrvr_dyn_ss",
+	"name": "ds_sqlsrvr_dyn_de",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqlsrvr_dyn_ss",
+			"referenceName": "ls_sqlsrvr_dyn_de",
 			"type": "LinkedServiceReference",
 			"parameters": {
 				"srvrName": {
@@ -56,6 +56,5 @@
 				"type": "Expression"
 			}
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

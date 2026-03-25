@@ -1,6 +1,5 @@
 {
-	"name": "ls_sqlsrvr_dyn_ss",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"name": "ls_sqlsrvr_dyn_de",
 	"properties": {
 		"parameters": {
 			"srvrName": {
@@ -31,14 +30,11 @@
 					"referenceName": "ls_adwm_kv",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": {
-					"value": "@linkedService().scrName",
-					"type": "Expression"
-				}
+				"secretName": "benarji"
 			}
 		},
 		"connectVia": {
-			"referenceName": "ir-akhil",
+			"referenceName": "ir-benarji",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
