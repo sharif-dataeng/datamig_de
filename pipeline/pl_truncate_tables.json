@@ -1,0 +1,51 @@
+{
+	"name": "pl_truncate_tables",
+	"properties": {
+		"activities": [
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[TruncateAllTables]"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Tsrvrname": {
+							"value": "@pipeline().globalParameters.cld_srvr_name",
+							"type": "Expression"
+						},
+						"T_dbname": {
+							"value": "@pipeline().globalParameters.cld_db_name",
+							"type": "Expression"
+						},
+						"T_usr_name": {
+							"value": "@pipeline().parameters.usr_name",
+							"type": "Expression"
+						},
+						"T_scrt_name": {
+							"value": "@pipeline().globalParameters.cld_scrt",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"usr_name": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
