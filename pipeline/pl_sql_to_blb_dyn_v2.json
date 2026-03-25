@@ -59,11 +59,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "schName"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
