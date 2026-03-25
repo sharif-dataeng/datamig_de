@@ -1,0 +1,12 @@
+{
+	"name": "SqlServer_dyn",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer_dyn_sa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
