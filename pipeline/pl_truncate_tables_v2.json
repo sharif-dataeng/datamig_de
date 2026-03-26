@@ -1,5 +1,5 @@
 {
-	"name": "truncate_tables_v2",
+	"name": "pl_truncate_tables_v2",
 	"properties": {
 		"activities": [
 			{
@@ -38,14 +38,6 @@
 							},
 							"T_scrt_name": {
 								"value": "@pipeline().globalParameters.cld_scrt",
-								"type": "Expression"
-							},
-							"t_schema_name": {
-								"value": "@pipeline().parameters.schema_name",
-								"type": "Expression"
-							},
-							"t_table_name": {
-								"value": "@pipeline().parameters.tbl_name",
 								"type": "Expression"
 							}
 						}

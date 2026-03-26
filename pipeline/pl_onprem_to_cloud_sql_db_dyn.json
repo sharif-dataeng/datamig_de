@@ -156,14 +156,6 @@
 										"T_scrt_name": {
 											"value": "@pipeline().globalParameters.cld_scrt",
 											"type": "Expression"
-										},
-										"t_schema_name": {
-											"value": "@item().schemaname",
-											"type": "Expression"
-										},
-										"t_table_name": {
-											"value": "@item().tablename",
-											"type": "Expression"
 										}
 									}
 								}
