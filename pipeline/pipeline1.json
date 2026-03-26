@@ -1,0 +1,47 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get List of Tables",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_cld_sqldb_dyn",
+						"type": "DatasetReference",
+						"parameters": {
+							"Tsrvrname": {
+								"value": "@pipeline().globalParameters.cld_srvr_name",
+								"type": "Expression"
+							},
+							"T_db_name": {
+								"value": "@pipeline().globalParameters.cld_db_name",
+								"type": "Expression"
+							},
+							"T_scrt_name": {
+								"value": "@pipeline().globalParameters.cld_scrt",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"annotations": []
+	}
+}

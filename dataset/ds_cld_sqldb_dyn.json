@@ -35,12 +35,6 @@
 			},
 			"T_scrt_name": {
 				"type": "String"
-			},
-			"t_schema_name": {
-				"type": "string"
-			},
-			"t_table_name": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
