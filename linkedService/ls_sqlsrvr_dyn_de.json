@@ -32,6 +32,10 @@
 				},
 				"secretName": "benarji"
 			}
+		},
+		"connectVia": {
+			"referenceName": "ir-benarji-sh",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
