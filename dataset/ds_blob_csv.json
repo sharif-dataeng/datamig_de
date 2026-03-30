@@ -1,4 +1,5 @@
 {
+	"factoryName": "adwm-etl-dev",
 	"name": "ds_blob_csv",
 	"properties": {
 		"linkedServiceName": {

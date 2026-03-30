@@ -1,4 +1,5 @@
 {
+	"factoryName": "adwm-etl-dev",
 	"name": "ls_blobstorage_de",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {

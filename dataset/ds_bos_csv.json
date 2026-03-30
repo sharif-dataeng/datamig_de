@@ -1,4 +1,5 @@
 {
+	"factoryName": "adwm-etl-dev",
 	"name": "ds_bos_csv",
 	"properties": {
 		"linkedServiceName": {

@@ -1,4 +1,5 @@
 {
+	"factoryName": "adwm-etl-dev",
 	"name": "pl_lookup_activity",
 	"properties": {
 		"activities": [
