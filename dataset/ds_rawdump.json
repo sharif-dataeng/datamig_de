@@ -1,11 +1,6 @@
 {
-	"factoryName": "adwm-etl-dev",
 	"name": "ds_rawdump",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ls_blobstorage_de",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
@@ -38,5 +33,6 @@
 				"type": "String"
 			}
 		]
-	}
+	},
+	"factoryName": "adwm-etl-dev"
 }
