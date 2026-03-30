@@ -1,0 +1,45 @@
+{
+	"name": "ls_sqlsrvr_dyn_ss",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"srvrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "@{linkedService().srvrName}",
+			"database": "@{linkedService().dbName}",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "@{linkedService().usrName}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_adwm_kv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().scrName",
+					"type": "Expression"
+				}
+			}
+		},
+		"connectVia": {
+			"referenceName": "ir-sharif-sh",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

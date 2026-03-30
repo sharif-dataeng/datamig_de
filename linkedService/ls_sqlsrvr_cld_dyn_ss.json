@@ -1,0 +1,40 @@
+{
+	"name": "ls_sqlsrvr_cld_dyn_ss",
+	"properties": {
+		"parameters": {
+			"srvrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "@{concat(linkedService().srvrName,'.database.windows.net')}",
+			"database": "@{linkedService().dbName}",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "@{linkedService().usrName}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_adwm_kv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().scrName",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}

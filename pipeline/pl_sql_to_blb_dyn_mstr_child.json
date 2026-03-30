@@ -1,0 +1,247 @@
+{
+	"name": "pl_sql_to_blb_dyn_mstr_child",
+	"properties": {
+		"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
+		"activities": [
+			{
+				"name": "LookupTable",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n    'SELECT * FROM ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' WHERE isactive = ''Y'''\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqlsrvr_dyn_ss",
+						"type": "DatasetReference",
+						"parameters": {
+							"tblName": {
+								"value": "@pipeline().parameters.tblName",
+								"type": "Expression"
+							},
+							"schName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"srvrName": {
+								"value": "@pipeline().parameters.srvrName",
+								"type": "Expression"
+							},
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"usrName": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupTable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupTable').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(item().loadtype,'F')\n",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Execute incrload pl",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"policy": {
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "pl_sql_blb_incrload",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"schName": {
+													"value": "@item().schemaname",
+													"type": "Expression"
+												},
+												"tblName": {
+													"value": "@item().tablename",
+													"type": "Expression"
+												},
+												"srvrName": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
+												"usrName": {
+													"value": "@pipeline().parameters.usrName",
+													"type": "Expression"
+												},
+												"dbName": {
+													"value": "@pipeline().parameters.dbName",
+													"type": "Expression"
+												},
+												"scrName": {
+													"value": "@pipeline().parameters.scrName",
+													"type": "Expression"
+												},
+												"waterMark": {
+													"value": "@item().watermark",
+													"type": "Expression"
+												},
+												"loadedOn": {
+													"value": "@item().loadedon",
+													"type": "Expression"
+												},
+												"strgName": {
+													"value": "@pipeline().parameters.strgName",
+													"type": "Expression"
+												},
+												"cntrlTbl": {
+													"value": "@pipeline().parameters.tblName",
+													"type": "Expression"
+												},
+												"cntrlTblSchm": {
+													"value": "@pipeline().parameters.schName",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Execute fullload pl",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"policy": {
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "pl_sql_blb_fullload",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"tblName": {
+													"value": "@item().tablename",
+													"type": "Expression"
+												},
+												"schName": {
+													"value": "@item().schemaname",
+													"type": "Expression"
+												},
+												"srvrName": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
+												"dbName": {
+													"value": "@pipeline().parameters.dbName",
+													"type": "Expression"
+												},
+												"usrName": {
+													"value": "@pipeline().parameters.usrName",
+													"type": "Expression"
+												},
+												"strgName": {
+													"value": "@pipeline().parameters.strgName",
+													"type": "Expression"
+												},
+												"scrName": {
+													"value": "@pipeline().parameters.scrName",
+													"type": "Expression"
+												},
+												"cntrlTbl": {
+													"value": "@pipeline().parameters.tblName",
+													"type": "Expression"
+												},
+												"cntrlTblSchm": {
+													"value": "@pipeline().parameters.schName",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"schName": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"tblName": {
+				"type": "string",
+				"defaultValue": "DataLoad_Control"
+			},
+			"srvrName": {
+				"type": "string",
+				"defaultValue": "AaryanSharif\\SHARIF"
+			},
+			"dbName": {
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
+			},
+			"usrName": {
+				"type": "string",
+				"defaultValue": "sharif"
+			},
+			"scrName": {
+				"type": "string",
+				"defaultValue": "sharif"
+			},
+			"strgName": {
+				"type": "string",
+				"defaultValue": "adwmstrg2"
+			}
+		},
+		"annotations": []
+	}
+}
