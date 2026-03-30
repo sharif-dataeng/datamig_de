@@ -1,5 +1,6 @@
 {
 	"name": "ls_adlsgen2_dyn_de",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"parameters": {
 			"strgName": {

@@ -1,18 +1,18 @@
 {
-	"name": "pl_sql_to_blb_dyn_de",
+	"name": "pl_sql_to_blb_dyn",
 	"properties": {
-		"description": "this pipeline will copy data from on prime sql server to gen2 blob storage dynamically",
+		"description": "This pipeline will copy data from on-premises SQL Server to Gen2 Blob storage dynamically.",
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copy data",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
+					"secureOutput": true,
+					"secureInput": true
 				},
 				"userProperties": [],
 				"typeProperties": {
@@ -29,7 +29,7 @@
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
 							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"fileExtension": ".csv"
 						}
 					},
 					"enableStaging": false,
@@ -37,14 +37,14 @@
 						"type": "TabularTranslator",
 						"typeConversion": true,
 						"typeConversionSettings": {
-							"allowDataTruncation": true,
+							"allowDataTruncation": false,
 							"treatBooleanAsNumber": false
 						}
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_sqlsrvr_dyn_de",
+						"referenceName": "ds_sqlsrvr_dyn_ss",
 						"type": "DatasetReference",
 						"parameters": {
 							"tblName": {
@@ -76,7 +76,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_adlsgen2_dyn_de",
+						"referenceName": "ds_adlsgen2_dyn_ss",
 						"type": "DatasetReference",
 						"parameters": {
 							"strgName": {
@@ -84,11 +84,11 @@
 								"type": "Expression"
 							},
 							"pathName": {
-								"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
+								"value": "@concat(pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/',pipeline().parameters.tblName)",
 								"type": "Expression"
 							},
 							"fileName": {
-								"value": "@concat(pipeline().parameters.tblName, formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
 								"type": "Expression"
 							}
 						}
@@ -98,36 +98,29 @@
 		],
 		"parameters": {
 			"schName": {
-				"type": "string",
-				"defaultValue": "HumanResources"
+				"type": "string"
 			},
 			"tblName": {
-				"type": "string",
-				"defaultValue": "Employee"
+				"type": "string"
 			},
 			"srvrName": {
-				"type": "string",
-				"defaultValue": "DELL"
+				"type": "string"
 			},
 			"dbName": {
-				"type": "string",
-				"defaultValue": "AdventureWorkMock"
+				"type": "string"
 			},
 			"usrName": {
-				"type": "string",
-				"defaultValue": "benarji"
+				"type": "string"
 			},
 			"scrName": {
-				"type": "string",
-				"defaultValue": "benarji"
+				"type": "string"
 			},
 			"strgName": {
-				"type": "string",
-				"defaultValue": "adwmstrg1"
+				"type": "string"
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2026-03-30T19:34:53Z"
+		"lastPublishTime": "2026-03-18T08:00:14Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
