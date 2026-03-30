@@ -1,0 +1,41 @@
+{
+	"name": "data_migration_onprime_sql_to_cld_sql",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_onprime_to_cloud_sql_dyn",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"s_schName": "dbo",
+					"s_tblName": "DataLoad_Control",
+					"s_srvrName": "AaryanSharif\\SHARIF",
+					"s_dbName": "AaryanSharif\\SHARIF",
+					"s_usrName": "sharif",
+					"t_srvrName": "dev1db"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-03-30T14:46:00",
+				"endTime": "2026-04-04T14:46:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"minutes": [
+						45
+					],
+					"hours": [
+						18
+					]
+				}
+			}
+		}
+	}
+}
