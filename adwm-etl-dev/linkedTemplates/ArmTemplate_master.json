@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adwm-etl-dev"
 		},
+		"ls_azure_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_azure_blob'"
+		},
+		"ls_adlsgen2_dyn_de_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+		},
 		"ls_adlsgen2_dyn_ss_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
@@ -14,6 +22,30 @@
 		"ls_adwm_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://adwm-kv.vault.azure.net/"
+		},
+		"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "@{concat(linkedService().srvrName,'.database.windows.net')}"
+		},
+		"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().dbName}"
+		},
+		"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "@{linkedService().usrName}"
+		},
+		"ls_sqlsrvr_dyn_de_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "@{linkedService().srvrName}"
+		},
+		"ls_sqlsrvr_dyn_de_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "@{linkedService().dbName}"
+		},
+		"ls_sqlsrvr_dyn_de_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "@{linkedService().usrName}"
 		},
 		"ls_sqlsrvr_dyn_ss_properties_typeProperties_server": {
 			"type": "string",
@@ -26,6 +58,46 @@
 		"ls_sqlsrvr_dyn_ss_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "@{linkedService().usrName}"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_schName": {
+			"type": "string",
+			"defaultValue": "dbo"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_tblName": {
+			"type": "string",
+			"defaultValue": "DataLoad_Control"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_srvrName": {
+			"type": "string",
+			"defaultValue": "AaryanSharif\\SHARIF"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_dbName": {
+			"type": "string",
+			"defaultValue": "AaryanSharif\\SHARIF"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_usrName": {
+			"type": "string",
+			"defaultValue": "sharif"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_scrName": {
+			"type": "string",
+			"defaultValue": "sharif"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_srvrName": {
+			"type": "string",
+			"defaultValue": "dev1db"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_dbName": {
+			"type": "string",
+			"defaultValue": "dev1db"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_usrName": {
+			"type": "string",
+			"defaultValue": "sharif"
+		},
+		"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_scrName": {
+			"type": "string",
+			"defaultValue": "sharif-cld"
 		},
 		"containerUri": {
 			"type": "string",
@@ -54,11 +126,35 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ls_azure_blob_connectionString": {
+						"value": "[parameters('ls_azure_blob_connectionString')]"
+					},
+					"ls_adlsgen2_dyn_de_properties_typeProperties_url": {
+						"value": "[parameters('ls_adlsgen2_dyn_de_properties_typeProperties_url')]"
+					},
 					"ls_adlsgen2_dyn_ss_properties_typeProperties_url": {
 						"value": "[parameters('ls_adlsgen2_dyn_ss_properties_typeProperties_url')]"
 					},
 					"ls_adwm_kv_properties_typeProperties_baseUrl": {
 						"value": "[parameters('ls_adwm_kv_properties_typeProperties_baseUrl')]"
+					},
+					"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_server": {
+						"value": "[parameters('ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_server')]"
+					},
+					"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_database": {
+						"value": "[parameters('ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_database')]"
+					},
+					"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_userName": {
+						"value": "[parameters('ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_userName')]"
+					},
+					"ls_sqlsrvr_dyn_de_properties_typeProperties_server": {
+						"value": "[parameters('ls_sqlsrvr_dyn_de_properties_typeProperties_server')]"
+					},
+					"ls_sqlsrvr_dyn_de_properties_typeProperties_database": {
+						"value": "[parameters('ls_sqlsrvr_dyn_de_properties_typeProperties_database')]"
+					},
+					"ls_sqlsrvr_dyn_de_properties_typeProperties_userName": {
+						"value": "[parameters('ls_sqlsrvr_dyn_de_properties_typeProperties_userName')]"
 					},
 					"ls_sqlsrvr_dyn_ss_properties_typeProperties_server": {
 						"value": "[parameters('ls_sqlsrvr_dyn_ss_properties_typeProperties_server')]"
@@ -72,6 +168,56 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "adwm-etl-dev_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_schName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_schName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_tblName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_tblName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_srvrName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_srvrName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_dbName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_dbName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_usrName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_usrName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_scrName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_s_scrName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_srvrName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_srvrName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_dbName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_dbName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_usrName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_usrName')]"
+					},
+					"data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_scrName": {
+						"value": "[parameters('data_migration_onprime_sql_to_cld_sql_properties_pl_onprime_to_cloud_sql_dyn_parameters_t_scrName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adwm-etl-dev_ArmTemplate_0')]"
+			]
 		}
 	]
 }
