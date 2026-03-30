@@ -1,5 +1,5 @@
 {
-	"name": "ls_adlsgen2_dyn_de",
+	"name": "ls_adlsgen2_dyn_ss",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"parameters": {

@@ -1,8 +1,8 @@
 {
-	"name": "ds_adlsgen2_dyn_de",
+	"name": "ds_adlsgen2_dyn_ss",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_adlsgen2_dyn_de",
+			"referenceName": "ls_adlsgen2_dyn_ss",
 			"type": "LinkedServiceReference",
 			"parameters": {
 				"strgName": {
