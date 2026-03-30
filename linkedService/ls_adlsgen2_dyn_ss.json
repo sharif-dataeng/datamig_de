@@ -1,0 +1,17 @@
+{
+	"name": "ls_adlsgen2_dyn_ss",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"strgName": {
+				"type": "string",
+				"defaultValue": "adwmstrg1"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
+		}
+	}
+}
