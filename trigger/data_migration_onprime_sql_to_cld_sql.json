@@ -15,7 +15,11 @@
 					"s_srvrName": "AaryanSharif\\SHARIF",
 					"s_dbName": "AaryanSharif\\SHARIF",
 					"s_usrName": "sharif",
-					"t_srvrName": "dev1db"
+					"s_scrName": "sharif",
+					"t_srvrName": "dev1db",
+					"t_dbName": "dev1db",
+					"t_usrName": "sharif",
+					"t_scrName": "sharif-cld"
 				}
 			}
 		],
