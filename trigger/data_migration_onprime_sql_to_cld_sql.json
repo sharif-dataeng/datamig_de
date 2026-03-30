@@ -2,7 +2,7 @@
 	"name": "data_migration_onprime_sql_to_cld_sql",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
