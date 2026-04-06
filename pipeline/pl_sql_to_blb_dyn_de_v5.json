@@ -1,5 +1,5 @@
 {
-	"name": "pl_sql_to_blb_dyn_v3",
+	"name": "pl_sql_to_blb_dyn_de_v5",
 	"properties": {
 		"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
 		"activities": [
@@ -334,15 +334,15 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "ds_sqlsrvr_dyn_ss",
+												"referenceName": "ds_sqlsrvr_dyn_de",
 												"type": "DatasetReference",
 												"parameters": {
 													"tblName": {
-														"value": "@item().tablename",
+														"value": "@pipeline().parameters.tblName",
 														"type": "Expression"
 													},
 													"schName": {
-														"value": "@item().schemaname",
+														"value": "@pipeline().parameters.schName",
 														"type": "Expression"
 													},
 													"srvrName": {
