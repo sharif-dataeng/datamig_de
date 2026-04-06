@@ -101,13 +101,15 @@
 										"userProperties": [],
 										"typeProperties": {
 											"source": {
-												"type": "SqlServerSource",
-												"sqlReaderQuery": {
-													"value": "@concat(\n    'SELECT * FROM ',\n    item().schemaname, '.', item().tablename,\n    ' WHERE ',\n    item().watermark,\n    ' > ''',\n    item().loadedon,\n    ''''\n)",
-													"type": "Expression"
+												"type": "DelimitedTextSource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"enablePartitionDiscovery": false
 												},
-												"queryTimeout": "02:00:00",
-												"partitionOption": "None"
+												"formatSettings": {
+													"type": "DelimitedTextReadSettings"
+												}
 											},
 											"sink": {
 												"type": "DelimitedTextSink",
@@ -132,39 +134,7 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "ds_sqlsrvr_dyn_ss",
-												"type": "DatasetReference",
-												"parameters": {
-													"tblName": {
-														"value": "@item().tablename",
-														"type": "Expression"
-													},
-													"schName": {
-														"value": "@item().schemaname",
-														"type": "Expression"
-													},
-													"srvrName": {
-														"value": "@pipeline().parameters.srvrName",
-														"type": "Expression"
-													},
-													"dbName": {
-														"value": "@pipeline().parameters.dbName",
-														"type": "Expression"
-													},
-													"usrName": {
-														"value": "@pipeline().parameters.usrName",
-														"type": "Expression"
-													},
-													"scrName": {
-														"value": "@pipeline().parameters.scrName",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "ds_adlsgen2_dyn_ss",
+												"referenceName": "ds_adlsgen2_dyn_de",
 												"type": "DatasetReference",
 												"parameters": {
 													"strgName": {
@@ -179,6 +149,20 @@
 														"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
 														"type": "Expression"
 													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_adlsgen2_dyn_de",
+												"type": "DatasetReference",
+												"parameters": {
+													"strgName": "@pipeline().parameters.strgName",
+													"pathName": {
+														"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/','incremental','/',item().tablename)",
+														"type": "Expression"
+													},
+													"fileName": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')"
 												}
 											}
 										]
