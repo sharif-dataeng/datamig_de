@@ -101,15 +101,9 @@
 										"userProperties": [],
 										"typeProperties": {
 											"source": {
-												"type": "DelimitedTextSource",
-												"storeSettings": {
-													"type": "AzureBlobFSReadSettings",
-													"recursive": true,
-													"enablePartitionDiscovery": false
-												},
-												"formatSettings": {
-													"type": "DelimitedTextReadSettings"
-												}
+												"type": "SqlServerSource",
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
 											},
 											"sink": {
 												"type": "DelimitedTextSink",
@@ -134,19 +128,31 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "ds_adlsgen2_dyn_de",
+												"referenceName": "ds_sqlsrvr_dyn_de",
 												"type": "DatasetReference",
 												"parameters": {
-													"strgName": {
-														"value": "@pipeline().parameters.strgName",
+													"tblName": {
+														"value": "@item().tablename",
 														"type": "Expression"
 													},
-													"pathName": {
-														"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/','incremental','/',item().tablename)",
+													"schName": {
+														"value": "@item().schemaname",
 														"type": "Expression"
 													},
-													"fileName": {
-														"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+													"srvrName": {
+														"value": "@pipeline().parameters.srvrName",
+														"type": "Expression"
+													},
+													"dbName": {
+														"value": "@pipeline().parameters.dbName",
+														"type": "Expression"
+													},
+													"usrName": {
+														"value": "@pipeline().parameters.usrName",
+														"type": "Expression"
+													},
+													"scrName": {
+														"value": "@pipeline().parameters.scrName",
 														"type": "Expression"
 													}
 												}
@@ -322,11 +328,11 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"tblName": {
-														"value": "@pipeline().parameters.tblName",
+														"value": "@item().tablename",
 														"type": "Expression"
 													},
 													"schName": {
-														"value": "@pipeline().parameters.schName",
+														"value": "@item().schemaname",
 														"type": "Expression"
 													},
 													"srvrName": {
@@ -392,10 +398,22 @@
 											"referenceName": "ls_sqlsrvr_dyn_de",
 											"type": "LinkedServiceReference",
 											"parameters": {
-												"srvrName": "DELL",
-												"dbName": "AdventureWorkMock",
-												"usrName": "benarji",
-												"scrName": "benarji"
+												"srvrName": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
+												"dbName": {
+													"value": "@pipeline().parameters.dbName",
+													"type": "Expression"
+												},
+												"usrName": {
+													"value": "@pipeline().parameters.usrName",
+													"type": "Expression"
+												},
+												"scrName": {
+													"value": "@pipeline().parameters.scrName",
+													"type": "Expression"
+												}
 											}
 										},
 										"typeProperties": {
