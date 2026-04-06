@@ -26,7 +26,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_sqlsrvr_dyn_ss",
+						"referenceName": "ds_sqlsrvr_dyn_de",
 						"type": "DatasetReference",
 						"parameters": {
 							"tblName": {
