@@ -501,7 +501,7 @@
 			},
 			"srvrName": {
 				"type": "string",
-				"defaultValue": "AaryanSharif\\SHARIF"
+				"defaultValue": "DELL"
 			},
 			"dbName": {
 				"type": "string",
@@ -509,15 +509,15 @@
 			},
 			"usrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "benarji"
 			},
 			"scrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "benarji"
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "adwmstrg1"
+				"defaultValue": "adwmstrg2"
 			}
 		},
 		"annotations": [],
