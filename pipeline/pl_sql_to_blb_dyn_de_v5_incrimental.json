@@ -1,5 +1,5 @@
 {
-	"name": "pl_sql_to_blb_dyn_de_v5",
+	"name": "pl_sql_to_blb_dyn_de_v5_incrimental",
 	"properties": {
 		"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
 		"activities": [
