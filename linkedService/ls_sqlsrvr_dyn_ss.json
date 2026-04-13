@@ -35,6 +35,10 @@
 					"type": "Expression"
 				}
 			}
+		},
+		"connectVia": {
+			"referenceName": "ir-sharif-sh",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
