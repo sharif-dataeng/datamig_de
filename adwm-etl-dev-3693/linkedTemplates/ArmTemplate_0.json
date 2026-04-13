@@ -21,7 +21,7 @@
 		},
 		"ls_adwm_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://adwm-kv.vault.azure.net/"
+			"defaultValue": "https://adwm-kv2.vault.azure.net/"
 		},
 		"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_server": {
 			"type": "string",

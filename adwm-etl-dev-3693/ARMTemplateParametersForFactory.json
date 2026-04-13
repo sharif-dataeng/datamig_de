@@ -15,7 +15,7 @@
 			"value": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
 		},
 		"ls_adwm_kv_properties_typeProperties_baseUrl": {
-			"value": "https://adwm-kv.vault.azure.net/"
+			"value": "https://adwm-kv2.vault.azure.net/"
 		},
 		"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_server": {
 			"value": "@{concat(linkedService().srvrName,'.database.windows.net')}"
