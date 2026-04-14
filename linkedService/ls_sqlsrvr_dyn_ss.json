@@ -3,16 +3,20 @@
 	"properties": {
 		"parameters": {
 			"srvrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "AaryanSharif\\SHARIF"
 			},
 			"dbName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
 			},
 			"usrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "sharif"
 			},
 			"scrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "sharif"
 			}
 		},
 		"annotations": [],
