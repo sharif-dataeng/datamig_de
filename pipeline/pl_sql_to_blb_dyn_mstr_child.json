@@ -174,8 +174,14 @@
 													"value": "@item().schemaname",
 													"type": "Expression"
 												},
-												"srvrName": "@pipeline().parameters.srvrName",
-												"dbName": "@pipeline().parameters.dbName",
+												"srvrName": {
+													"value": "@pipeline().parameters.srvrName",
+													"type": "Expression"
+												},
+												"dbName": {
+													"value": "@pipeline().parameters.dbName",
+													"type": "Expression"
+												},
 												"usrName": {
 													"value": "@pipeline().parameters.usrName",
 													"type": "Expression"
@@ -233,7 +239,7 @@
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "adwmstrg2"
+				"defaultValue": "adwmstg"
 			}
 		},
 		"annotations": []
