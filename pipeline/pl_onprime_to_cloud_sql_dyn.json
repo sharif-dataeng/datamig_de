@@ -554,11 +554,11 @@
 			},
 			"t_srvrName": {
 				"type": "string",
-				"defaultValue": "dev1db"
+				"defaultValue": "adwm-dev"
 			},
 			"t_dbName": {
 				"type": "string",
-				"defaultValue": "dev1db"
+				"defaultValue": "adwm-raw-db"
 			},
 			"t_usrName": {
 				"type": "string",
