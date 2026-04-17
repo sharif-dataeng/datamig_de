@@ -139,7 +139,7 @@
 					"scripts": [
 						{
 							"type": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''',pipeline().parameters.schName,\n    ''' AND tablename = ''',pipeline().parameters.tblName, ''''\n)",
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrlTblSchm, '.', pipeline().parameters.cntrlTbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, \n\t''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)\n",
 								"type": "Expression"
 							}
 						}
