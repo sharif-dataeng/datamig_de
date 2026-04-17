@@ -1,0 +1,229 @@
+{
+	"name": "pl_sql_to_blb_de_fullload",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data full load",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqlsrvr_dyn_de",
+						"type": "DatasetReference",
+						"parameters": {
+							"tblName": {
+								"value": "@pipeline().parameters.tblName",
+								"type": "Expression"
+							},
+							"schName": {
+								"value": "@pipeline().parameters.schName",
+								"type": "Expression"
+							},
+							"srvrName": {
+								"value": "@pipeline().parameters.srvrName",
+								"type": "Expression"
+							},
+							"dbName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"usrName": {
+								"value": "@pipeline().parameters.usrName",
+								"type": "Expression"
+							},
+							"scrName": {
+								"value": "@pipeline().parameters.scrName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adlsgen2_dyn_de",
+						"type": "DatasetReference",
+						"parameters": {
+							"strgName": {
+								"value": "@pipeline().parameters.strgName",
+								"type": "Expression"
+							},
+							"pathName": {
+								"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/','fullload','/',pipeline().parameters.tblName)\n",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "update on full load success",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy data full load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sqlsrvr_dyn_de",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"srvrName": {
+							"value": "@pipeline().parameters.srvrName",
+							"type": "Expression"
+						},
+						"dbName": {
+							"value": "@pipeline().parameters.dbName",
+							"type": "Expression"
+						},
+						"usrName": {
+							"value": "@pipeline().parameters.usrName",
+							"type": "Expression"
+						},
+						"scrName": {
+							"value": "@pipeline().parameters.scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": {
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''',pipeline().parameters.schName,\n    ''' AND tablename = ''',pipeline().parameters.tblName, ''''\n)",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "update on full load fail",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy data full load",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sqlsrvr_dyn_de",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"srvrName": {
+							"value": "@pipeline().parameters.srvrName",
+							"type": "Expression"
+						},
+						"dbName": {
+							"value": "@pipeline().parameters.dbName",
+							"type": "Expression"
+						},
+						"usrName": {
+							"value": "@pipeline().parameters.usrName",
+							"type": "Expression"
+						},
+						"scrName": {
+							"value": "@pipeline().parameters.scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": {
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"schName": {
+				"type": "string"
+			},
+			"tblName": {
+				"type": "string"
+			},
+			"srvrName": {
+				"type": "string"
+			},
+			"dbName": {
+				"type": "string"
+			},
+			"usrName": {
+				"type": "string"
+			},
+			"strgName": {
+				"type": "string"
+			},
+			"scrName": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
