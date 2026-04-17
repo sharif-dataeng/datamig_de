@@ -356,7 +356,7 @@
 										],
 										"outputs": [
 											{
-												"referenceName": "ds_adlsgen2_dyn_ss",
+												"referenceName": "ds_adlsgen2_dyn_de",
 												"type": "DatasetReference",
 												"parameters": {
 													"strgName": {
@@ -364,11 +364,11 @@
 														"type": "Expression"
 													},
 													"pathName": {
-														"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/','fullload','/',item().tablename)",
+														"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/','fullload','/',pipeline().parameters.tblName)",
 														"type": "Expression"
 													},
 													"fileName": {
-														"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+														"value": "@concat(pipeline().parameters.tblName,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
 														"type": "Expression"
 													}
 												}
