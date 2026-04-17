@@ -132,11 +132,11 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"tblName": {
-														"value": "@item().tablename",
+														"value": "@pipeline().parameters.tblName",
 														"type": "Expression"
 													},
 													"schName": {
-														"value": "@item().schemaname",
+														"value": "@pipeline().parameters.schName",
 														"type": "Expression"
 													},
 													"srvrName": {
