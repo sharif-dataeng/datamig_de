@@ -449,25 +449,13 @@
 										},
 										"userProperties": [],
 										"linkedServiceName": {
-											"referenceName": "ls_sqlsrvr_dyn_ss",
+											"referenceName": "ls_sqlsrvr_dyn_de",
 											"type": "LinkedServiceReference",
 											"parameters": {
-												"srvrName": {
-													"value": "@pipeline().parameters.srvrName",
-													"type": "Expression"
-												},
-												"dbName": {
-													"value": "@pipeline().parameters.dbName",
-													"type": "Expression"
-												},
-												"usrName": {
-													"value": "@pipeline().parameters.usrName",
-													"type": "Expression"
-												},
-												"scrName": {
-													"value": "@pipeline().parameters.scrName",
-													"type": "Expression"
-												}
+												"srvrName": "DELL",
+												"dbName": "AdventureWorkMock",
+												"usrName": "benarji",
+												"scrName": "benarji"
 											}
 										},
 										"typeProperties": {
