@@ -132,11 +132,11 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"tblName": {
-														"value": "@pipeline().parameters.tblName",
+														"value": "@item().tablename",
 														"type": "Expression"
 													},
 													"schName": {
-														"value": "@pipeline().parameters.schName",
+														"value": "@item().schemaname",
 														"type": "Expression"
 													},
 													"srvrName": {
@@ -328,11 +328,11 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"tblName": {
-														"value": "@pipeline().parameters.tblName",
+														"value": "@item().tablename",
 														"type": "Expression"
 													},
 													"schName": {
-														"value": "@pipeline().parameters.schName",
+														"value": "@item().schemaname",
 														"type": "Expression"
 													},
 													"srvrName": {
