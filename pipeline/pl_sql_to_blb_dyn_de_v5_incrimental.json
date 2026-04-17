@@ -517,7 +517,7 @@
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "adwmstrg2"
+				"defaultValue": "adwmstg2"
 			}
 		},
 		"annotations": [],
