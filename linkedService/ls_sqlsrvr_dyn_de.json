@@ -38,7 +38,7 @@
 			}
 		},
 		"connectVia": {
-			"referenceName": "ir-benarji",
+			"referenceName": "ir-benarji-sh",
 			"type": "IntegrationRuntimeReference"
 		}
 	},
