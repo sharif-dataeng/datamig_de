@@ -1,9 +1,0 @@
-{
-	"name": "ir-benarji",
-	"properties": {
-		"type": "SelfHosted",
-		"typeProperties": {
-			"selfContainedInteractiveAuthoringEnabled": true
-		}
-	}
-}
