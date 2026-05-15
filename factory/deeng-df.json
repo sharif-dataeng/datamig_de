@@ -1,0 +1,15 @@
+{
+	"name": "deeng-df",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "98e02f8a-ee87-48a2-8d64-9574feec99df",
+		"tenantId": "14f70e1f-911e-4f19-a74a-478ad1a8e8fd"
+	}
+}
