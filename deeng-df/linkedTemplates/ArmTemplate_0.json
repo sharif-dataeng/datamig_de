@@ -91,7 +91,7 @@
 				"parameters": {
 					"strgName": {
 						"type": "string",
-						"defaultValue": "adwmstrg1"
+						"defaultValue": "adwmstg"
 					}
 				},
 				"annotations": [],
@@ -185,9 +185,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"type": "SelfHosted",
-				"typeProperties": {
-					"selfContainedInteractiveAuthoringEnabled": true
-				}
+				"typeProperties": {}
 			},
 			"dependsOn": []
 		},
@@ -300,16 +298,20 @@
 			"properties": {
 				"parameters": {
 					"srvrName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "adwm-dev"
 					},
 					"dbName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "adwm-raw-db"
 					},
 					"usrName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "sharif"
 					},
 					"scrName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "sharif-cld"
 					}
 				},
 				"annotations": [],
@@ -387,16 +389,20 @@
 			"properties": {
 				"parameters": {
 					"srvrName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "AaryanSharif\\SHARIF"
 					},
 					"dbName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "AdventureWorkMock"
 					},
 					"usrName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "sharif"
 					},
 					"scrName": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "sharif"
 					}
 				},
 				"annotations": [],
@@ -419,14 +425,9 @@
 							"type": "Expression"
 						}
 					}
-				},
-				"connectVia": {
-					"referenceName": "ir-sharif-sh",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/ir-sharif-sh')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_adwm_kv')]"
 			]
 		},
@@ -945,8 +946,8 @@
 													"timeout": "0.12:00:00",
 													"retry": 0,
 													"retryIntervalInSeconds": 30,
-													"secureOutput": true,
-													"secureInput": true
+													"secureOutput": false,
+													"secureInput": false
 												},
 												"userProperties": [],
 												"typeProperties": {
@@ -1186,11 +1187,11 @@
 					},
 					"t_srvrName": {
 						"type": "string",
-						"defaultValue": "dev1db"
+						"defaultValue": "adwm-dev"
 					},
 					"t_dbName": {
 						"type": "string",
-						"defaultValue": "dev1db"
+						"defaultValue": "adwm-raw-db"
 					},
 					"t_usrName": {
 						"type": "string",
