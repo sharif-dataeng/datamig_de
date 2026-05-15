@@ -239,7 +239,7 @@
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "adwmstrg2"
+				"defaultValue": "adwmstg"
 			}
 		},
 		"annotations": [],
