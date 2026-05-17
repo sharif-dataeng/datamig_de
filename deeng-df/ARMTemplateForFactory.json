@@ -21,7 +21,7 @@
 		},
 		"ls_adwm_kv_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://adwm-kv2.vault.azure.net/"
+			"defaultValue": "https://ups-kv.vault.azure.net/"
 		},
 		"ls_sqlsrvr_cld_dyn_ss_properties_typeProperties_server": {
 			"type": "string",
@@ -2594,7 +2594,7 @@
 					},
 					"strgName": {
 						"type": "string",
-						"defaultValue": "adwmstg"
+						"defaultValue": "adwgen2"
 					}
 				},
 				"annotations": [],
@@ -3841,9 +3841,14 @@
 							"type": "Expression"
 						}
 					}
+				},
+				"connectVia": {
+					"referenceName": "ir-sharif-sh",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ir-sharif-sh')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_adwm_kv')]"
 			]
 		},
