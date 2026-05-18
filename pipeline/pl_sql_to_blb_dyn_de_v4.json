@@ -220,7 +220,7 @@
 			},
 			"strgName": {
 				"type": "string",
-				"defaultValue": "adwmstg"
+				"defaultValue": "adwgen2"
 			}
 		},
 		"annotations": [],
