@@ -13,7 +13,7 @@
 			"url": "@{concat('https://',linkedService().strgName,'.dfs.core.windows.net')}"
 		},
 		"connectVia": {
-			"referenceName": "ir-benarji-sh",
+			"referenceName": "ir-benarji",
 			"type": "IntegrationRuntimeReference"
 		}
 	},
