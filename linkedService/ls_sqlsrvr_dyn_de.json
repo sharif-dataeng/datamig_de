@@ -31,14 +31,14 @@
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "ls_adwm_kv2",
+					"referenceName": "ls_adwm_kv",
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "benarji"
 			}
 		},
 		"connectVia": {
-			"referenceName": "ir-benarji-sh",
+			"referenceName": "ir-benarji",
 			"type": "IntegrationRuntimeReference"
 		}
 	},
