@@ -223,7 +223,7 @@
 			},
 			"srvrName": {
 				"type": "string",
-				"defaultValue": "AaryanSharif\\SHARIF"
+				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
 			},
 			"dbName": {
 				"type": "string",
@@ -231,11 +231,11 @@
 			},
 			"usrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "akhil"
 			},
 			"scrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "akhil"
 			},
 			"strgName": {
 				"type": "string",
