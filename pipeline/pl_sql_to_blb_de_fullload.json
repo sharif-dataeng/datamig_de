@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data full load",
+				"name": "Copy data fullload",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -99,7 +99,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Copy data full load",
+						"activity": "Copy data fullload",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -138,10 +138,8 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.cntrlTblSchm, '.', pipeline().parameters.cntrlTbl,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, \n\t''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)\n",
-								"type": "Expression"
-							}
+							"type": "NonQuery",
+							"text": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -152,7 +150,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Copy data full load",
+						"activity": "Copy data fullload",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -191,10 +189,8 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": {
-								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
-								"type": "Expression"
-							}
+							"type": "NonQuery",
+							"text": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
