@@ -218,6 +218,12 @@
 			},
 			"scrName": {
 				"type": "string"
+			},
+			"cntrlTbl": {
+				"type": "string"
+			},
+			"cntrlTblSchm": {
+				"type": "string"
 			}
 		},
 		"annotations": []
