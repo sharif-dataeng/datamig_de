@@ -4,16 +4,20 @@
 	"properties": {
 		"parameters": {
 			"srvrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "adwm-dev"
 			},
 			"dbName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "adwm-raw-db"
 			},
 			"usrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "sharif"
 			},
 			"scrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "sharif-cld"
 			}
 		},
 		"annotations": [],
