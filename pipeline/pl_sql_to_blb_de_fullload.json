@@ -139,7 +139,10 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)"
+							"text": {
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -190,7 +193,10 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)"
+							"text": {
+								"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', pipeline().parameters.schName, ''' AND tablename = ''', pipeline().parameters.tblName, ''''\n)",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -199,25 +205,32 @@
 		],
 		"parameters": {
 			"schName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "dbo"
 			},
 			"tblName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DataLoad_Control"
 			},
 			"srvrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DELL"
 			},
 			"dbName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "AdventureWorkMock"
 			},
 			"usrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "benarji"
 			},
 			"strgName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "adwgen2"
 			},
 			"scrName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "benarji"
 			},
 			"cntrlTbl": {
 				"type": "string"
