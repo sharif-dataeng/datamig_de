@@ -1,0 +1,654 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"ls_sqlsrvr_dyn_de": {
+			"type": "string"
+		},
+		"ls_adlsgen2_dyn_de": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_sql_to_blb_dyn_de_v5_incrimental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this pipeline will copy data from onprime sql server to gen2 blob storage dynamically.",
+				"activities": [
+					{
+						"name": "LookupTable",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n    'SELECT * FROM ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' WHERE isactive = ''Y'''\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqlsrvr_dyn_de",
+								"type": "DatasetReference",
+								"parameters": {
+									"tblName": {
+										"value": "@pipeline().parameters.tblName",
+										"type": "Expression"
+									},
+									"schName": {
+										"value": "@pipeline().parameters.schName",
+										"type": "Expression"
+									},
+									"srvrName": {
+										"value": "@pipeline().parameters.srvrName",
+										"type": "Expression"
+									},
+									"dbName": {
+										"value": "@pipeline().parameters.dbName",
+										"type": "Expression"
+									},
+									"usrName": {
+										"value": "@pipeline().parameters.usrName",
+										"type": "Expression"
+									},
+									"scrName": {
+										"value": "@pipeline().parameters.scrName",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEachTable",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "LookupTable",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('LookupTable').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "If Condition1",
+									"type": "IfCondition",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@equals(item().loadtype,'F')\n",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "Copy data incremental",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "SqlServerSource",
+														"sqlReaderQuery": "@concat(\n    'SELECT * FROM ',\n    item().schemaname, '.', item().tablename,\n    ' WHERE ',\n    item().watermark,\n    ' > ''',\n    item().loadedon,\n    ''''\n)",
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "DelimitedTextSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "DelimitedTextWriteSettings",
+															"quoteAllText": true,
+															"fileExtension": ".txt"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "ds_sqlsrvr_dyn_de",
+														"type": "DatasetReference",
+														"parameters": {
+															"tblName": {
+																"value": "@item().tablename",
+																"type": "Expression"
+															},
+															"schName": {
+																"value": "@item().schemaname",
+																"type": "Expression"
+															},
+															"srvrName": {
+																"value": "@pipeline().parameters.srvrName",
+																"type": "Expression"
+															},
+															"dbName": {
+																"value": "@pipeline().parameters.dbName",
+																"type": "Expression"
+															},
+															"usrName": {
+																"value": "@pipeline().parameters.usrName",
+																"type": "Expression"
+															},
+															"scrName": {
+																"value": "@pipeline().parameters.scrName",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "ds_adlsgen2_dyn_de",
+														"type": "DatasetReference",
+														"parameters": {
+															"strgName": "@pipeline().parameters.strgName",
+															"pathName": {
+																"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',item().schemaname,'/','incremental','/',item().tablename)",
+																"type": "Expression"
+															},
+															"fileName": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')"
+														}
+													}
+												]
+											},
+											{
+												"name": "update on incr load success",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "Copy data incremental",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "[parameters('ls_sqlsrvr_dyn_de')]",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"srvrName": {
+															"value": "@pipeline().parameters.srvrName",
+															"type": "Expression"
+														},
+														"dbName": {
+															"value": "@pipeline().parameters.dbName",
+															"type": "Expression"
+														},
+														"usrName": {
+															"value": "@pipeline().parameters.usrName",
+															"type": "Expression"
+														},
+														"scrName": {
+															"value": "@pipeline().parameters.scrName",
+															"type": "Expression"
+														}
+													}
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "NonQuery",
+															"text": {
+																"value": "@concat(\r\n    'UPDATE ',\r\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\r\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\r\n    'WHERE schemaname = ''', item().schemaname, ''' AND tablename = ''', item().tablename, ''''\r\n)",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "update on incr load fail",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "Copy data incremental",
+														"dependencyConditions": [
+															"Failed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "[parameters('ls_sqlsrvr_dyn_de')]",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"srvrName": "DELL",
+														"dbName": "AdventureWorkMock",
+														"usrName": "benarji",
+														"scrName": "benarji"
+													}
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "NonQuery",
+															"text": {
+																"value": "@concat(\r\n    'UPDATE ',\r\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\r\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\r\n    'WHERE schemaname = ''', item().schemaname, ''' AND tablename = ''', item().tablename, ''''\r\n)",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "Copy data fullload",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "SqlServerSource",
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "DelimitedTextSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "DelimitedTextWriteSettings",
+															"quoteAllText": true,
+															"fileExtension": ".txt"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "ds_sqlsrvr_dyn_de",
+														"type": "DatasetReference",
+														"parameters": {
+															"tblName": {
+																"value": "@item().tablename",
+																"type": "Expression"
+															},
+															"schName": {
+																"value": "@item().schemaname",
+																"type": "Expression"
+															},
+															"srvrName": {
+																"value": "@pipeline().parameters.srvrName",
+																"type": "Expression"
+															},
+															"dbName": {
+																"value": "@pipeline().parameters.dbName",
+																"type": "Expression"
+															},
+															"usrName": {
+																"value": "@pipeline().parameters.usrName",
+																"type": "Expression"
+															},
+															"scrName": {
+																"value": "@pipeline().parameters.scrName",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "ds_adlsgen2_dyn_de",
+														"type": "DatasetReference",
+														"parameters": {
+															"strgName": {
+																"value": "@pipeline().parameters.strgName",
+																"type": "Expression"
+															},
+															"pathName": {
+																"value": "@concat(pipeline().parameters.usrName,'/',pipeline().parameters.dbName,'/',pipeline().parameters.schName,'/','fullload','/',pipeline().parameters.tblName)",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@concat(item().tablename,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv')",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											},
+											{
+												"name": "update on full load success",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "Copy data fullload",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "[parameters('ls_sqlsrvr_dyn_de')]",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"srvrName": {
+															"value": "@pipeline().parameters.srvrName",
+															"type": "Expression"
+														},
+														"dbName": {
+															"value": "@pipeline().parameters.dbName",
+															"type": "Expression"
+														},
+														"usrName": {
+															"value": "@pipeline().parameters.usrName",
+															"type": "Expression"
+														},
+														"scrName": {
+															"value": "@pipeline().parameters.scrName",
+															"type": "Expression"
+														}
+													}
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "NonQuery",
+															"text": {
+																"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''success'' ',\n    'WHERE schemaname = ''', item().schemaname, ''' AND tablename = ''', item().tablename, ''''\n)",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "update on full load fail",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "Copy data fullload",
+														"dependencyConditions": [
+															"Failed"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "[parameters('ls_sqlsrvr_dyn_de')]",
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"srvrName": {
+															"value": "@pipeline().parameters.srvrName",
+															"type": "Expression"
+														},
+														"dbName": {
+															"value": "@pipeline().parameters.dbName",
+															"type": "Expression"
+														},
+														"usrName": {
+															"value": "@pipeline().parameters.usrName",
+															"type": "Expression"
+														},
+														"scrName": {
+															"value": "@pipeline().parameters.scrName",
+															"type": "Expression"
+														}
+													}
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "NonQuery",
+															"text": {
+																"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', item().schemaname, ''' AND tablename = ''', item().tablename, ''''\n)",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"schName": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"tblName": {
+						"type": "string",
+						"defaultValue": "DataLoad_Control"
+					},
+					"srvrName": {
+						"type": "string",
+						"defaultValue": "DELL"
+					},
+					"dbName": {
+						"type": "string",
+						"defaultValue": "AdventureWorkMock"
+					},
+					"usrName": {
+						"type": "string",
+						"defaultValue": "benarji"
+					},
+					"scrName": {
+						"type": "string",
+						"defaultValue": "benarji"
+					},
+					"strgName": {
+						"type": "string",
+						"defaultValue": "adwgen2"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-30T19:34:52Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqlsrvr_dyn_de')]",
+				"[concat(variables('factoryId'), '/datasets/ds_adlsgen2_dyn_de')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqlsrvr_dyn_de')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('ls_sqlsrvr_dyn_de')]",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"srvrName": {
+							"value": "@dataset().srvrName",
+							"type": "Expression"
+						},
+						"dbName": {
+							"value": "@dataset().dbName",
+							"type": "Expression"
+						},
+						"usrName": {
+							"value": "@dataset().usrName",
+							"type": "Expression"
+						},
+						"scrName": {
+							"value": "@dataset().scrName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"tblName": {
+						"type": "string"
+					},
+					"schName": {
+						"type": "string"
+					},
+					"srvrName": {
+						"type": "string"
+					},
+					"dbName": {
+						"type": "string"
+					},
+					"usrName": {
+						"type": "string"
+					},
+					"scrName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tblName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_adlsgen2_dyn_de')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('ls_adlsgen2_dyn_de')]",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"strgName": {
+							"value": "@dataset().strgName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"strgName": {
+						"type": "string"
+					},
+					"pathName": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().pathName",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}
