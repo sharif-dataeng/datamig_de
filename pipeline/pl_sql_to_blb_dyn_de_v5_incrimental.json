@@ -102,6 +102,7 @@
 										"typeProperties": {
 											"source": {
 												"type": "SqlServerSource",
+												"sqlReaderQuery": "@concat(\n    'SELECT * FROM ',\n    item().schemaname, '.', item().tablename,\n    ' WHERE ',\n    item().watermark,\n    ' > ''',\n    item().loadedon,\n    ''''\n)",
 												"queryTimeout": "02:00:00",
 												"partitionOption": "None"
 											},
@@ -463,7 +464,7 @@
 												{
 													"type": "NonQuery",
 													"text": {
-														"value": "@concat(\r\n    'UPDATE ',\r\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\r\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\r\n    'WHERE schemaname = ''', item().schemaname, ''' AND tablename = ''', item().tablename, ''''\r\n)",
+														"value": "@concat(\n    'UPDATE ',\n    pipeline().parameters.schName, '.', pipeline().parameters.tblName,\n    ' SET loadedon = CURRENT_TIMESTAMP, loadstatus = ''failed'' ',\n    'WHERE schemaname = ''', item().schemaname, ''' AND tablename = ''', item().tablename, ''''\n)",
 														"type": "Expression"
 													}
 												}
