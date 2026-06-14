@@ -1,0 +1,21 @@
+{
+	"name": "ds_blob_gen2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_storage6_gen1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
