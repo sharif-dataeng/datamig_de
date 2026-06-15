@@ -223,7 +223,7 @@
 			},
 			"srvrName": {
 				"type": "string",
-				"defaultValue": "AaryanSharif\\SHARIF"
+				"defaultValue": "Hp\\AKHIL_SQL_SERVER"
 			},
 			"dbName": {
 				"type": "string",
@@ -231,11 +231,11 @@
 			},
 			"usrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "akhil"
 			},
 			"scrName": {
 				"type": "string",
-				"defaultValue": "sharif"
+				"defaultValue": "akhil"
 			},
 			"strgName": {
 				"type": "string",
@@ -243,7 +243,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2026-03-30T19:34:53Z"
+		"lastPublishTime": "2026-05-17T11:53:39Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
