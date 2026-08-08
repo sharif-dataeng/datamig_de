@@ -1,0 +1,63 @@
+{
+	"name": "pl_lookup act",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_src1",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@pipeline().parameters.srccontainer",
+								"type": "Expression"
+							},
+							"directory": {
+								"value": "@pipeline().parameters.srcdirectory",
+								"type": "Expression"
+							},
+							"file": {
+								"value": "@pipeline().parameters.srcfile",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"srccontainer": {
+				"type": "String"
+			},
+			"srcdirectory": {
+				"type": "String"
+			},
+			"srcfile": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
